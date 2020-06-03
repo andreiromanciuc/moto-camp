@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+            xmlns:th="http://www.thymeleaf.org"
+            lang="en">
+<head>
+    <title>MOTORAR | LET'S RIDE TOGETHER</title>
+    <!-- Stylesheets
+    ================================================= -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <!--Favicon-->
+    <link rel="shortcut icon" type="image/png" href="images/motorar/favicon.png"/>
+</head>
+<body>
+
+<!-- Top Banner
+================================================= -->
+<section id="banner">
+    <div class="container">
+
+        <!-- Sign Up Form
+        ================================================= -->
+        <div class="sign-up-form">
+            <a href="/createMotorcycle" class="logo"><img src="images/motorar/logo_transparent.png" alt="Moto-logo"/></a>
+            <h2 class="text-white">Share your ride experiences</h2>
+            <div class="line-divider"></div>
+            <div class="form-wrapper">
+                <p class="signup-text">Please introduce your motorcycle's data</p>
+                <form action="#">
+                    <fieldset class="form-group">
+                        <label for="example-motormodel"></label><input type="text" class="form-control" id="example-motormodel" placeholder="Enter motorcycle model">
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label for="example-motorname"></label><input type="text" class="form-control" id="example-motorname" placeholder="Enter motorcycle's username">
+                    </fieldset>
+                </form>
+                <p>By signning up you agree to the terms</p>
+                <button id="btn-motorSign" class="btn-secondary">Sign UP</button>
+            </div>
+            <a href="/login">Already have an account?</a>
+        </div></div></section><!-- Sign Up Form End -->
+
+<!-- Scripts
+================================================= -->
+<script src="js/jquery-3.1.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.appear.min.js"></script>
+<script src="js/jquery.incremental-counter.js"></script>
+<script src="js/script.js"></script>
+<script src="js/signup_motor.js"></script>
+
+</body>

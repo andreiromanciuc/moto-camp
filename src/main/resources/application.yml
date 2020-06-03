@@ -1,0 +1,9 @@
+server.port: 8083
+spring:
+  jpa:
+    hibernate.ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+  datasource:
+    url: jdbc:mysql://localhost:3306/moto-camp
+    username: moto-camp-admin
+    password: moto-camp-admin

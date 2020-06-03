@@ -1,0 +1,59 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+lang="en">
+
+<head>
+	<title>MOTORAR | LET'S RIDE TOGETHER</title>
+	<!-- Stylesheets
+    ================================================= -->
+	<link rel="stylesheet" href="css/bootstrap.min.css" />
+	<link rel="stylesheet" href="css/style.css" />
+	<!--Favicon-->
+	<link rel="shortcut icon" type="image/png" href="images/motorar/favicon.png"/>
+</head>
+<body>
+
+<!-- Top Banner
+================================================= -->
+<section id="banner">
+	<div class="container">
+
+		<!-- Sign Up Form
+        ================================================= -->
+		<div class="sign-up-form">
+			<a href="/login" class="logo"><img src="images/motorar/logo_transparent.png" alt="Moto-logo"/></a>
+			<h2 class="text-white">Share your ride experiences</h2>
+			<div class="line-divider"></div>
+			<div class="form-wrapper">
+				<p class="signup-text">Please LogIn</p>
+				<form method="post" action="/login">
+					<fieldset class="form-group">
+						<label for="username" class="sr-only">Username</label>
+						<input type="text" id="username" name="username" class="form-control" placeholder="Username" required="" autofocus="">
+					</fieldset>
+					<fieldset class="form-group">
+						<label for="password" class="sr-only">Password</label>
+						<input type="password" id="password" name="password" class="form-control" placeholder="Password" required="">
+					</fieldset>
+					<fieldset class="form-group">
+					<label for="remember-me">Remember me?</label>
+					<input type="checkbox" id="remember-me" name="remember-me">
+					</fieldset>
+
+					<button class="btn-secondary"type="submit">Login</button>
+
+				</form>
+			</div>
+			<a href="/signup">I don't have an account</a>
+		</div>
+	</div>
+</section><!-- Sign Up Form End -->
+
+<!-- Scripts
+================================================= -->
+
+<script src="js/index.js"></script>
+
+</body>
+</html>
