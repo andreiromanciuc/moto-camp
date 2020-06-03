@@ -1,0 +1,88 @@
+package org.fasttrackit.motocamp.service;
+
+import org.fasttrackit.motocamp.domain.Comment;
+import org.fasttrackit.motocamp.domain.Post;
+import org.fasttrackit.motocamp.domain.Profile;
+import org.fasttrackit.motocamp.exception.ResourceNotFoundException;
+import org.fasttrackit.motocamp.persistance.CommentRepository;
+import org.fasttrackit.motocamp.transfer.comment.CommentResponse;
+import org.fasttrackit.motocamp.transfer.comment.CreateComment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class CommentService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+
+    private final CommentRepository commentRepository;
+    private final ProfileService profileService;
+    private final PostService postService;
+
+    @Autowired
+    public CommentService(CommentRepository commentRepository, ProfileService profileService, PostService postService) {
+        this.commentRepository = commentRepository;
+        this.profileService = profileService;
+        this.postService = postService;
+    }
+
+    public Comment createComment(CreateComment request) {
+        LOGGER.info("Creating comment {}", request);
+        Profile profile = profileService.getProfile(request.getProfileId());
+        Post post = postService.getPost(request.getPostId());
+
+        Comment comment = new Comment();
+        comment.setContent(request.getContent());
+        comment.setDate(LocalDate.now());
+        comment.setProfile(profile);
+        comment.setPost(post);
+
+        return commentRepository.save(comment);
+    }
+
+    @Transactional
+    public Page<CommentResponse> getCommentsForPost(long postId, Pageable pageable) {
+        LOGGER.info("Retrieving comments for post {}", postId);
+
+        Page<Comment> commentsByPost = commentRepository.getCommentsByPost(postId, pageable);
+
+        List<CommentResponse> commentDtos = new ArrayList<>();
+
+        for (Comment comment : commentsByPost.getContent()) {
+            CommentResponse dto = new CommentResponse();
+            dto.setContent(comment.getContent());
+            dto.setDate(comment.getDate());
+            commentDtos.add(dto);
+        }
+        return new PageImpl<>(commentDtos, pageable, commentsByPost.getTotalElements());
+    }
+
+    public Comment getComment(long id) {
+        LOGGER.info("Retrieving comment {}", id);
+        return commentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Comment " + id + " not found."));
+    }
+
+    public Comment updateComment(long id, CreateComment request) {
+        LOGGER.info("Updating comment {}", id);
+        Comment comment = getComment(id);
+        comment.setContent(request.getContent());
+        comment.setDate(LocalDate.now());
+        return commentRepository.save(comment);
+    }
+
+    public void deleteComment(long id) {
+        LOGGER.info("Delete comment {}", id);
+        Comment comment = getComment(id);
+        commentRepository.delete(comment);
+    }
+}
