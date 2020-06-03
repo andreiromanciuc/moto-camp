@@ -3,7 +3,6 @@ package org.fasttrackit.motocamp;
 import org.fasttrackit.motocamp.domain.Post;
 import org.fasttrackit.motocamp.service.PostService;
 import org.fasttrackit.motocamp.steps.PostTestSteps;
-import org.fasttrackit.motocamp.steps.ProfileTestSteps;
 import org.fasttrackit.motocamp.transfer.post.UpdatePost;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +17,7 @@ import static org.hamcrest.core.IsNull.notNullValue;
 public class PostIntegrationTests {
     @Autowired
     public PostService postService;
-    @Autowired
-    private ProfileTestSteps profileTestSteps;
+
     @Autowired
     private PostTestSteps postTestSteps;
 

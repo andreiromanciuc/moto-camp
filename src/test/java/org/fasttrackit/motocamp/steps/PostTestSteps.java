@@ -1,10 +1,9 @@
 package org.fasttrackit.motocamp.steps;
 
 import org.fasttrackit.motocamp.domain.Post;
-import org.fasttrackit.motocamp.domain.Profile;
+import org.fasttrackit.motocamp.domain.User;
 import org.fasttrackit.motocamp.service.PostService;
 import org.fasttrackit.motocamp.transfer.post.CreatePost;
-import org.fasttrackit.motocamp.domain.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,18 +17,18 @@ public class PostTestSteps {
 
     @Autowired
     private PostService postService;
-
     @Autowired
-    private ProfileTestSteps profileTestSteps;
+    private UserTestSteps userTestSteps;
+
 
     public Post createPost() {
-        Profile profile = profileTestSteps.createProfile();
+        User user = userTestSteps.createUser();
 
         CreatePost createPost = new CreatePost();
         createPost.setTitle("Test");
         createPost.setContent("Test");
         createPost.setImageUrl("Test");
-        createPost.setProfileId(profile.getId());
+        createPost.setUserId(user.getId());
 
         Post post = postService.createPost(createPost);
 

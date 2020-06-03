@@ -4,7 +4,7 @@ public class CreatePost {
     private String title;
     private String content;
     private String imageUrl;
-    private long profileId;
+    private long userId;
 
 
     public String getTitle() {
@@ -31,12 +31,12 @@ public class CreatePost {
         this.imageUrl = imageUrl;
     }
 
-    public long getProfileId() {
-        return profileId;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setProfileId(long profileId) {
-        this.profileId = profileId;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     @Override

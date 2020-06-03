@@ -24,7 +24,7 @@ public class CommentTestSteps {
         CreateComment request = new CreateComment();
         request.setContent("Comment test");
         request.setPostId(post.getId());
-        request.setProfileId(post.getProfile().getId());
+        request.setUserId(post.getUser().getId());
 
         Comment comment = commentService.createComment(request);
 

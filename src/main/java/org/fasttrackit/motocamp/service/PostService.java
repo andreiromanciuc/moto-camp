@@ -1,13 +1,12 @@
 package org.fasttrackit.motocamp.service;
 
 import org.fasttrackit.motocamp.domain.Post;
-import org.fasttrackit.motocamp.domain.Profile;
+import org.fasttrackit.motocamp.domain.User;
 import org.fasttrackit.motocamp.exception.ResourceNotFoundException;
 import org.fasttrackit.motocamp.persistance.PostRepository;
 import org.fasttrackit.motocamp.transfer.post.CreatePost;
 import org.fasttrackit.motocamp.transfer.post.PostResponse;
 import org.fasttrackit.motocamp.transfer.post.UpdatePost;
-import org.fasttrackit.motocamp.domain.Post;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,20 +25,20 @@ public class PostService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     private final PostRepository postRepository;
-    private final ProfileService profileService;
+    private final UserService userService;
 
     @Autowired
-    public PostService(PostRepository postRepository, ProfileService profileService) {
+    public PostService(PostRepository postRepository, UserService userService) {
         this.postRepository = postRepository;
-        this.profileService = profileService;
+        this.userService = userService;
     }
     @Transactional
     public Post createPost(CreatePost request) {
-        LOGGER.info("Creating post from profile {}", request.getProfileId());
-        Profile profile = profileService.getProfile(request.getProfileId());
+        LOGGER.info("Creating post from profile {}", request.getUserId());
+        User user = userService.getUser(request.getUserId());
 
         Post post = new Post();
-        post.setProfile(profile);
+        post.setUser(user);
         post.setContent(request.getContent());
         post.setTitle(request.getTitle());
         post.setImageUrl(request.getImageUrl());
@@ -53,7 +52,7 @@ public class PostService {
     public Page<PostResponse> getPostsForProfile(long id, Pageable pageable) {
         LOGGER.info("Retrieving posts for profile {}", id);
 
-        Page<Post> postsPage = postRepository.getAllByProfileIdContaining(id, pageable);
+        Page<Post> postsPage = postRepository.getAllByUser_Id(id, pageable);
 
         List<PostResponse> postDtos = new ArrayList<>();
 

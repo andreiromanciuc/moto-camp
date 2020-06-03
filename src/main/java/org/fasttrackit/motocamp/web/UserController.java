@@ -55,22 +55,35 @@ public class UserController {
     public ResponseEntity<User> updateUser(@PathVariable long id, @Valid @RequestBody CreateUser request) {
         if (request.getUsername() != null
                 && request.getEmail() == null
-                && request.getPassword() == null) {
+                && request.getPassword() == null
+                && request.getFullName() == null
+                && request.getImageUrl() == null) {
             User user = userService.updateUserName(id, request);
             return new ResponseEntity<>(user, HttpStatus.OK);
         } else if (request.getUsername() == null
                 && request.getEmail() != null
-                && request.getPassword() == null) {
+                && request.getPassword() == null
+                && request.getFullName() == null
+                && request.getImageUrl() == null) {
             User user = userService.updateEmail(id, request);
             return new ResponseEntity<>(user, HttpStatus.OK);
         } else if (request.getUsername() == null
                 && request.getEmail() == null
-                && request.getPassword() != null) {
+                && request.getPassword() != null
+                && request.getFullName() == null
+                && request.getImageUrl() == null) {
             User user = userService.updatePassword(id, request);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }else if (request.getUsername() == null
+                && request.getEmail() == null
+                && request.getPassword() == null
+                && request.getFullName() == null
+                && request.getImageUrl() != null){
+            User user = userService.updateImageUrl(id, request);
             return new ResponseEntity<>(user, HttpStatus.OK);
         }
 
-        User user = userService.updateUser(id, request);
+        User user = userService.updateFullName(id, request);
 
         return new ResponseEntity<>(user, HttpStatus.OK);
     }

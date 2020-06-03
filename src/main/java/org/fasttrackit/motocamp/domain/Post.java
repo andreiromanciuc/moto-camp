@@ -15,7 +15,7 @@ public class Post {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private Profile profile;
+    private User user;
 
     public long getId() {
         return id;
@@ -57,22 +57,11 @@ public class Post {
         this.imageUrl = imageUrl;
     }
 
-    public Profile getProfile() {
-        return profile;
+    public User getUser() {
+        return user;
     }
 
-    public void setProfile(Profile profile) {
-        this.profile = profile;
-    }
-
-    @Override
-    public String toString() {
-        return "Post{" +
-                "id=" + id +
-                ", date=" + date +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
-                '}';
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -12,8 +12,8 @@ public class Comment {
     private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "profile_id")
-    private Profile profile;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
@@ -43,12 +43,12 @@ public class Comment {
         this.date = date;
     }
 
-    public Profile getProfile() {
-        return profile;
+    public User getUser() {
+        return user;
     }
 
-    public void setProfile(Profile profile) {
-        this.profile = profile;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Post getPost() {
@@ -57,14 +57,5 @@ public class Comment {
 
     public void setPost(Post post) {
         this.post = post;
-    }
-
-    @Override
-    public String toString() {
-        return "Comment{" +
-                "id=" + id +
-                ", content='" + content + '\'' +
-                ", date=" + date +
-                '}';
     }
 }

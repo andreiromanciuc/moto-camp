@@ -2,7 +2,6 @@ package org.fasttrackit.motocamp.web;
 
 import org.fasttrackit.motocamp.domain.Post;
 import org.fasttrackit.motocamp.service.PostService;
-import org.fasttrackit.motocamp.service.ProfileService;
 import org.fasttrackit.motocamp.transfer.post.CreatePost;
 import org.fasttrackit.motocamp.transfer.post.PostResponse;
 import org.fasttrackit.motocamp.transfer.post.UpdatePost;
@@ -22,7 +21,7 @@ public class PostController {
     private final PostService postService;
 
     @Autowired
-    public PostController(PostService postService, ProfileService profileService) {
+    public PostController(PostService postService) {
         this.postService = postService;
     }
 

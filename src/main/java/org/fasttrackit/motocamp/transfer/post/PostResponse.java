@@ -41,13 +41,4 @@ public class PostResponse {
         this.imageUrl = imageUrl;
     }
 
-    @Override
-    public String toString() {
-        return "PostResponse{" +
-                "date=" + date +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
-                '}';
-    }
 }

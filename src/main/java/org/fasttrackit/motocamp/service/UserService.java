@@ -130,6 +130,21 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User updateImageUrl(long id, CreateUser request) {
+        LOGGER.info("Updating image url for user {}", id);
+        User user = getUser(id);
+
+        user.setImageUrl(request.getImageUrl());
+        return userRepository.save(user);
+    }
+
+    public User updateFullName(long id, CreateUser request) {
+        LOGGER.info("Updating full name to user {}", id);
+        User user = getUser(id);
+        user.setFullName(request.getFullName());
+        return userRepository.save(user);
+    }
+
     public void deleteUser(long id) {
         LOGGER.info("Deleting user {}", id);
         User user = getUser(id);

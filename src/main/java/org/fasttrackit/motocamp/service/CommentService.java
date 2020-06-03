@@ -2,7 +2,7 @@ package org.fasttrackit.motocamp.service;
 
 import org.fasttrackit.motocamp.domain.Comment;
 import org.fasttrackit.motocamp.domain.Post;
-import org.fasttrackit.motocamp.domain.Profile;
+import org.fasttrackit.motocamp.domain.User;
 import org.fasttrackit.motocamp.exception.ResourceNotFoundException;
 import org.fasttrackit.motocamp.persistance.CommentRepository;
 import org.fasttrackit.motocamp.transfer.comment.CommentResponse;
@@ -25,25 +25,25 @@ public class CommentService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     private final CommentRepository commentRepository;
-    private final ProfileService profileService;
+    private final UserService userService;
     private final PostService postService;
 
     @Autowired
-    public CommentService(CommentRepository commentRepository, ProfileService profileService, PostService postService) {
+    public CommentService(CommentRepository commentRepository, UserService userService, PostService postService) {
         this.commentRepository = commentRepository;
-        this.profileService = profileService;
+        this.userService = userService;
         this.postService = postService;
     }
 
     public Comment createComment(CreateComment request) {
         LOGGER.info("Creating comment {}", request);
-        Profile profile = profileService.getProfile(request.getProfileId());
+        User user = userService.getUser(request.getPostId());
         Post post = postService.getPost(request.getPostId());
 
         Comment comment = new Comment();
         comment.setContent(request.getContent());
         comment.setDate(LocalDate.now());
-        comment.setProfile(profile);
+
         comment.setPost(post);
 
         return commentRepository.save(comment);
@@ -61,8 +61,8 @@ public class CommentService {
             CommentResponse dto = new CommentResponse();
             dto.setContent(comment.getContent());
             dto.setDate(comment.getDate());
-            dto.setUsername(comment.getProfile().getUserName());
-            dto.setImageUrl(comment.getProfile().getImageUrl());
+            dto.setUsername(comment.getUser().getUsername());
+            dto.setImageUrl(comment.getUser().getImageUrl());
             commentDtos.add(dto);
         }
         return new PageImpl<>(commentDtos, pageable, commentsByPost.getTotalElements());

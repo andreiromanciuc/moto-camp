@@ -29,12 +29,5 @@ public class GetUsersRequest {
         this.namePartialName = namePartialName;
     }
 
-    @Override
-    public String toString() {
-        return "GetUsersRequest{" +
-                "userPartialName='" + userPartialName + '\'' +
-                ", emailPartialName='" + emailPartialName + '\'' +
-                ", namePartialName='" + namePartialName + '\'' +
-                '}';
-    }
+
 }
