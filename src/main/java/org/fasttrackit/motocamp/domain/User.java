@@ -26,6 +26,9 @@ public class User {
     @NotNull
     private String password;
 
+    private String fullName;
+    private String imageUrl;
+
     private int active;
 
     private String role = " ";
@@ -41,6 +44,22 @@ public class User {
 
     protected User() {
 
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public long getId() {

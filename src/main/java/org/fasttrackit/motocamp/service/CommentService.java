@@ -61,6 +61,8 @@ public class CommentService {
             CommentResponse dto = new CommentResponse();
             dto.setContent(comment.getContent());
             dto.setDate(comment.getDate());
+            dto.setUsername(comment.getProfile().getUserName());
+            dto.setImageUrl(comment.getProfile().getImageUrl());
             commentDtos.add(dto);
         }
         return new PageImpl<>(commentDtos, pageable, commentsByPost.getTotalElements());

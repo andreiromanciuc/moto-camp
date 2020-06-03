@@ -1,10 +1,8 @@
 package org.fasttrackit.motocamp.transfer.comment;
 
-import java.time.LocalDate;
 
 public class CreateComment {
     private String content;
-    private LocalDate date;
     private long profileId;
     private long postId;
 
@@ -32,21 +30,5 @@ public class CreateComment {
         this.content = content;
     }
 
-    public LocalDate getDate() {
-        return date;
-    }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    @Override
-    public String toString() {
-        return "CreateComment{" +
-                "content='" + content + '\'' +
-                ", date=" + date +
-                ", profileId=" + profileId +
-                ", postId=" + postId +
-                '}';
-    }
 }
