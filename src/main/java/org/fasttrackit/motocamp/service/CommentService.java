@@ -37,13 +37,13 @@ public class CommentService {
 
     public Comment createComment(CreateComment request) {
         LOGGER.info("Creating comment {}", request);
-        User user = userService.getUser(request.getPostId());
+        User user = userService.getUser(request.getUserId());
         Post post = postService.getPost(request.getPostId());
 
         Comment comment = new Comment();
         comment.setContent(request.getContent());
         comment.setDate(LocalDate.now());
-
+        comment.setUser(user);
         comment.setPost(post);
 
         return commentRepository.save(comment);

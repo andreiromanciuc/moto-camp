@@ -12,11 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/comment")
+@RequestMapping("/newsfeed/comment")
 public class CommentController {
 
     private final CommentService commentService;
@@ -27,21 +26,21 @@ public class CommentController {
     }
 
     @PostMapping
-    public ResponseEntity<Comment> createComment(@Valid @RequestBody CreateComment request) {
+    public ResponseEntity<Comment> createComment(@RequestBody CreateComment request) {
         Comment comment = commentService.createComment(request);
 
         return new ResponseEntity<>(comment, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Page<CommentResponse>> getComments(@PathVariable long postId, Pageable pageable) {
-        Page<CommentResponse> commentsForPost = commentService.getCommentsForPost(postId, pageable);
+    public ResponseEntity<Page<CommentResponse>> getComments(Pageable pageable, @PathVariable long id) {
+        Page<CommentResponse> commentsForPost = commentService.getCommentsForPost(id, pageable);
 
         return new ResponseEntity<>(commentsForPost, HttpStatus.OK);
     }
 
-    @PutMapping("/id")
-    public ResponseEntity<Comment> updateComment(@PathVariable long id, @Valid @RequestBody CreateComment request) {
+    @PutMapping("/{id}")
+    public ResponseEntity<Comment> updateComment(@PathVariable long id, @RequestBody CreateComment request) {
         Comment comment = commentService.updateComment(id, request);
         return new ResponseEntity<>(comment, HttpStatus.OK);
     }
