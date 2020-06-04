@@ -2,6 +2,7 @@ package org.fasttrackit.motocamp.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -39,14 +40,19 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/js/signup_motor").permitAll()
                 .antMatchers("/signup/**").permitAll()
                 .antMatchers("/createMotorcycle/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/newsfeed/**").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/newsfeed/**").authenticated()
+                .antMatchers(HttpMethod.PUT, "/newsfeed/**").authenticated()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin()
-                .loginPage("/login").permitAll()
-                .defaultSuccessUrl("/newsfeed").permitAll()
-                .and()
-                .logout()
-                .logoutSuccessUrl("/login");
+                .httpBasic();
+//                .and()
+//                .formLogin()
+//                .loginPage("/login").permitAll()
+//                .defaultSuccessUrl("/newsfeed").permitAll()
+//                .and()
+//                .logout()
+//                .logoutSuccessUrl("/login");
     }
 
 

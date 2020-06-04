@@ -95,9 +95,10 @@ public class PostService {
                 .orElseThrow(() -> new ResourceNotFoundException("Post " + id + " not found."));
     }
 
-    public Post updatePost(long id, UpdatePost request) {
-        LOGGER.info("Updating post {}", id);
-        Post post = getPost(id);
+    public Post updatePost(UpdatePost request) {
+        LOGGER.info("Updating post {}", request.getPostId());
+
+        Post post = getPost(request.getPostId());
         post.setDate(LocalDate.now());
         post.setContent(request.getContent());
         return postRepository.save(post);

@@ -16,7 +16,7 @@ import javax.validation.Valid;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/post")
+@RequestMapping("/newsfeed/post")
 public class PostController {
     private final PostService postService;
 
@@ -45,9 +45,9 @@ public class PostController {
         return new ResponseEntity<>(allPosts, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Post> updatePost(@PathVariable long id, @Valid @RequestBody UpdatePost request) {
-        Post post = postService.updatePost(id, request);
+    @PutMapping
+    public ResponseEntity<Post> updatePost(@RequestBody UpdatePost request) {
+        Post post = postService.updatePost(request);
         return new ResponseEntity<>(post, HttpStatus.OK);
     }
 
