@@ -1,9 +1,9 @@
 window.Signup_motor = {
     API_URL: "http://localhost:8083/createMotorcycle",
 
-    singupMotor: function (profile) {
+    singupMotor: function () {
 
-        let userId = profile.id;
+        let userId = localStorage.getItem("user");
         let requestBody = {
             userId : userId,
             modelMotor: $("#example-motormodel").val(),
@@ -17,7 +17,8 @@ window.Signup_motor = {
             contentType: "application/json",
             data: JSON.stringify(requestBody)
         }).done(function () {
-            window.location.replace("/newsfeed")
+            window.location.replace("/newsfeed");
+            localStorage.removeItem("user");
         })
     },
 

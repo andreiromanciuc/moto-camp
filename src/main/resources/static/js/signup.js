@@ -19,22 +19,8 @@ window.Signup = {
                 url: Signup.API_URL + "/user" + "?username=" + username + "&email=" + email + "&password=" + password,
                 method: "POST",
             }).done(function (user) {
-                let userId = user.id;
-
-                let requestBody = {
-                    fullName: "",
-                    imageUrl: "",
-                    userId: userId
-                };
-
-                $.ajax({
-                    url: Signup.API_URL + "/profile",
-                    method: "POST",
-                    contentType: "application/json",
-                    data: JSON.stringify(requestBody)
-                }).done(function (profile) {
-                    window.location.replace("/createMotorcycle");
-                })
+                localStorage.setItem("user", user.id.toString());
+                window.location.replace("/createMotorcycle")
             })
         }
     },
