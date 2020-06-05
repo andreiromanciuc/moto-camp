@@ -17,7 +17,9 @@ window.Signup_motor = {
             contentType: "application/json",
             data: JSON.stringify(requestBody)
         }).done(function () {
-            window.location.replace("/newsfeed");
+            $(".signup-text").replaceWith('<p class="signup-text">Congratulations! You have just created new user account. Please LogIn ' +
+                '<a style="color: #5cb85c; size: 10px" href="/login">here</a></p>');
+
             localStorage.removeItem("user");
         })
     },

@@ -40,19 +40,18 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/js/signup_motor").permitAll()
                 .antMatchers("/signup/**").permitAll()
                 .antMatchers("/createMotorcycle/**").permitAll()
+                .antMatchers("/login/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/newsfeed/**").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/newsfeed/**").authenticated()
                 .antMatchers(HttpMethod.PUT, "/newsfeed/**").authenticated()
                 .anyRequest().authenticated()
                 .and()
-                .httpBasic();
-//                .and()
-//                .formLogin()
-//                .loginPage("/login").permitAll()
-//                .defaultSuccessUrl("/newsfeed").permitAll()
-//                .and()
-//                .logout()
-//                .logoutSuccessUrl("/login");
+                .formLogin()
+                .loginPage("/login").permitAll()
+                .defaultSuccessUrl("/newsfeed").permitAll()
+                .and()
+                .logout()
+                .logoutSuccessUrl("/login");
     }
 
 
