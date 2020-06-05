@@ -46,12 +46,13 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT, "/newsfeed/**").authenticated()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin()
-                .loginPage("/login").permitAll()
-                .defaultSuccessUrl("/newsfeed").permitAll()
-                .and()
-                .logout()
-                .logoutSuccessUrl("/login");
+                .httpBasic();
+//                .formLogin()
+//                .loginPage("/login").permitAll()
+//                .defaultSuccessUrl("/newsfeed").permitAll()
+//                .and()
+//                .logout()
+//                .logoutSuccessUrl("/login");
     }
 
 
