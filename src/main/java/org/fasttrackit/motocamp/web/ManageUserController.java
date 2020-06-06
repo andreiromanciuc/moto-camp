@@ -3,6 +3,7 @@ package org.fasttrackit.motocamp.web;
 import org.fasttrackit.motocamp.domain.User;
 import org.fasttrackit.motocamp.service.UserService;
 import org.fasttrackit.motocamp.transfer.user.CreateUser;
+import org.fasttrackit.motocamp.transfer.user.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,9 +29,14 @@ public class ManageUserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    @RequestMapping("/")
+    public ResponseEntity<UserResponse> getUserByUsername( String request) {
+        UserResponse userByUsername = userService.getUserByUsername(request);
+        return new ResponseEntity<>(userByUsername, HttpStatus.OK);
+    }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable long id, @Valid @RequestBody CreateUser request) {
+    public ResponseEntity<User> updateUser(@PathVariable long id, @RequestBody CreateUser request) {
         if (request.getUsername() != null
                 && request.getEmail() == null
                 && request.getPassword() == null

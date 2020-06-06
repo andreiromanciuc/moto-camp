@@ -28,9 +28,5 @@ public class MotorcycleController {
         return new ResponseEntity<>(motorcycle, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Motorcycle> getMotorcycle(@PathVariable long id) {
-        Motorcycle motorcycle = motorService.getMotorcycle(id);
-        return new ResponseEntity<>(motorcycle, HttpStatus.OK);
-    }
+
 }

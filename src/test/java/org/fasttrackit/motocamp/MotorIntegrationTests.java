@@ -5,6 +5,7 @@ import org.fasttrackit.motocamp.service.MotorService;
 import org.fasttrackit.motocamp.steps.MotorTestSteps;
 import org.fasttrackit.motocamp.steps.UserTestSteps;
 import org.fasttrackit.motocamp.transfer.motorcycle.CreateMotorcycle;
+import org.fasttrackit.motocamp.transfer.motorcycle.UpdateMotorcycle;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -49,7 +50,7 @@ public class MotorIntegrationTests {
     void updateMotor_whenMotorExist_thenReturnMotor() {
         Motorcycle motor = motorTestSteps.createMotor();
 
-        CreateMotorcycle request = new CreateMotorcycle();
+        UpdateMotorcycle request = new UpdateMotorcycle();
         request.setUserName(motor.getUserName() + "update");
         Motorcycle response = motorService.updateMotorUserName(motor.getId(), request);
 

@@ -5,12 +5,16 @@ import org.fasttrackit.motocamp.domain.User;
 import org.fasttrackit.motocamp.exception.ResourceNotFoundException;
 import org.fasttrackit.motocamp.persistance.MotorRepository;
 import org.fasttrackit.motocamp.transfer.motorcycle.CreateMotorcycle;
+import org.fasttrackit.motocamp.transfer.motorcycle.UpdateMotorcycle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -25,6 +29,8 @@ public class MotorService {
         this.motorRepository = motorRepository;
         this.userService = userService;
     }
+
+
 
 //    public Motorcycle createMotor(CreateMotorcycle request) {
 //        Motorcycle motorcycle = new Motorcycle();
@@ -41,21 +47,22 @@ public class MotorService {
                 .orElseThrow(()-> new ResourceNotFoundException("Motorcycle "+id+" not found"));
     }
 
-    public Motorcycle updateMotorcycleModel(long id, CreateMotorcycle request) {
+    public Motorcycle updateMotorcycleModel(long id, UpdateMotorcycle request) {
         LOGGER.info("Updating motorcycle model {}", id);
         Motorcycle motorcycle = getMotorcycle(id);
         motorcycle.setModelMotor(request.getModelMotor());
+
         return motorRepository.save(motorcycle);
     }
 
-    public Motorcycle updateMotorUserName(long id, CreateMotorcycle request) {
+    public Motorcycle updateMotorUserName(long id, UpdateMotorcycle request) {
         LOGGER.info("Updating motorcycle username {}", request);
         Motorcycle motorcycle = getMotorcycle(id);
         motorcycle.setUserName(request.getUserName());
         return motorRepository.save(motorcycle);
     }
 
-    public Motorcycle updateImageUrl(long id, CreateMotorcycle request) {
+    public Motorcycle updateImageUrl(long id, UpdateMotorcycle request) {
         LOGGER.info("Updating motorcycle imageUrl: {}", request);
         Motorcycle motorcycle = getMotorcycle(id);
         motorcycle.setImageUrl(request.getImageUrl());

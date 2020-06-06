@@ -54,16 +54,16 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public UserResponse getUserResponse(long id) {
-        LOGGER.info("Retrieving user and show response user {}", id);
+    public UserResponse getUserByUsername(String request) {
+        LOGGER.info("Retrieving user by username {}", request);
 
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User " + id + " not found."));
+        User user = userRepository.findByUsername(request);
 
         UserResponse userResponse = new UserResponse();
         userResponse.setId(user.getId());
         userResponse.setEmail(user.getEmail());
         userResponse.setUsername(user.getUsername());
+        userResponse.setProfileImageUrl(user.getImageUrl());
 
         return userResponse;
     }

@@ -1,13 +1,14 @@
 window.Newsfeed = {
-    API_URL: "http://localhost:8083,",
+    API_URL: "http://localhost:8083/newsfeed,",
 
     getUser: function () {
-        Index.logInUsers();
+       let username = $(".profile-name").getItem();
+
         $.ajax({
-            url: Newsfeed.API_URL +"/users"+"?id=1",
+            url: Newsfeed.API_URL +"/user/"+ "?username=" + username,
             method: "GET"
         }).done(function (response) {
-            Newsfeed.displayUser();
+            response.getItem("id");
         })
     },
 
