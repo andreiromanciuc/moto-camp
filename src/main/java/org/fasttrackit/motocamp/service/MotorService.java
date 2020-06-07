@@ -10,11 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -42,7 +39,7 @@ public class MotorService {
 //    }
 
     public Motorcycle getMotorcycle(long id) {
-        LOGGER.info("Search motorcycle {}", id);
+        LOGGER.info("Retrieving motorcycle {}", id);
         return motorRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Motorcycle "+id+" not found"));
     }

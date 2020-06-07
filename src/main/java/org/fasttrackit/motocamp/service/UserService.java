@@ -54,10 +54,24 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public UserResponse getUserByUsername(String request) {
+    public UserResponse getUserBySession(String request) {
         LOGGER.info("Retrieving user by username {}", request);
 
         User user = userRepository.findByUsername(request);
+
+        UserResponse userResponse = new UserResponse();
+        userResponse.setId(user.getId());
+        userResponse.setEmail(user.getEmail());
+        userResponse.setUsername(user.getUsername());
+        userResponse.setProfileImageUrl(user.getImageUrl());
+
+        return userResponse;
+    }
+
+    public UserResponse getUserByUsername (CreateUser request) {
+        LOGGER.info("Retrieving user by username {}", request);
+        String username = request.getUsername();
+        User user = userRepository.findByUsername(username);
 
         UserResponse userResponse = new UserResponse();
         userResponse.setId(user.getId());

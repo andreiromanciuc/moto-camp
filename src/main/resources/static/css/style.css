@@ -312,10 +312,11 @@ textarea {
 }
 
 .menu {
-    background: #231F20;
+    background: #3694C9;
     border: none;
     border-radius: 0;
     margin-bottom: 0;
+
 }
 
 .menu form {
@@ -324,6 +325,7 @@ textarea {
 
 .menu form .form-group {
     position: relative;
+    color: white;
 }
 
 .menu form .form-group i.icon {
@@ -334,11 +336,10 @@ textarea {
 }
 
 .menu form .form-group input.form-control {
-    background: rgba(255, 255, 255, 0.2);
+    background: white;
     border: 0;
     box-shadow: none;
     min-width: 235px;
-    color: #fff;
     height: 26px;
     border-radius: 13px;
     font-size: 12px;
@@ -385,6 +386,8 @@ textarea {
 }
 
 .navbar-default .navbar-collapse, .navbar-default .navbar-form {
+
+    margin-right: 160px;
     border: 0;
 }
 

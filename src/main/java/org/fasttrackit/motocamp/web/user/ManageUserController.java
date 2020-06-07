@@ -28,7 +28,7 @@ public class ManageUserController {
     public Long currentUserName(Principal principal) {
         String name = principal.getName();
 
-        UserResponse user = userService.getUserByUsername(name);
+        UserResponse user = userService.getUserBySession(name);
 
         return user.getId();
     }
@@ -39,8 +39,8 @@ public class ManageUserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @RequestMapping("/")
-    public ResponseEntity<UserResponse> getUserByUsername( String request) {
+    @GetMapping
+    public ResponseEntity<UserResponse> getUserByUsername(@RequestBody CreateUser request) {
         UserResponse userByUsername = userService.getUserByUsername(request);
         return new ResponseEntity<>(userByUsername, HttpStatus.OK);
     }
