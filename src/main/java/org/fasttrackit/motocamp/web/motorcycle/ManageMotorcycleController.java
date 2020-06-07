@@ -1,4 +1,4 @@
-package org.fasttrackit.motocamp.web;
+package org.fasttrackit.motocamp.web.motorcycle;
 
 import org.fasttrackit.motocamp.domain.Motorcycle;
 import org.fasttrackit.motocamp.service.MotorService;

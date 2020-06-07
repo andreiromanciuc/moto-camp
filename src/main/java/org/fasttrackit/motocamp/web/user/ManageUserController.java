@@ -1,4 +1,4 @@
-package org.fasttrackit.motocamp.web;
+package org.fasttrackit.motocamp.web.user;
 
 import org.fasttrackit.motocamp.domain.User;
 import org.fasttrackit.motocamp.service.UserService;
@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.security.Principal;
 
 @CrossOrigin
 @RestController
@@ -21,6 +21,16 @@ public class ManageUserController {
     @Autowired
     public ManageUserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
+    @ResponseBody
+    public Long currentUserName(Principal principal) {
+        String name = principal.getName();
+
+        UserResponse user = userService.getUserByUsername(name);
+
+        return user.getId();
     }
 
     @GetMapping("/{id}")

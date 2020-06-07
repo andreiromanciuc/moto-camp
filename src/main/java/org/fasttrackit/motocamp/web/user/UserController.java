@@ -1,4 +1,4 @@
-package org.fasttrackit.motocamp.web;
+package org.fasttrackit.motocamp.web.user;
 
 import org.fasttrackit.motocamp.domain.User;
 import org.fasttrackit.motocamp.persistance.UserRepository;
