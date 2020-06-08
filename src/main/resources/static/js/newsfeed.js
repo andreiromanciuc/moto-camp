@@ -92,6 +92,17 @@ window.Newsfeed = {
 
         })
     },
+
+    searchPostByTitle: function () {
+        let title = $("#search").val();
+        $.ajax({
+            url: Newsfeed.API_URL + "/post/search?title="+title,
+            method: "GET"
+        }).done(function (response) {
+            console.log(response);
+
+        })
+    },
     //
     // displayPosts: function (posts) {
     //     let postsHtml = '';
@@ -137,7 +148,7 @@ window.Newsfeed = {
             event.preventDefault();
 
             Newsfeed.getUserByUsername();
-
+            Newsfeed.searchPostByTitle();
         });
 
         $("#btn-publish").click(function (event) {

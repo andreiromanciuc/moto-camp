@@ -37,6 +37,12 @@ public class PostController {
         return new ResponseEntity<>(postsForProfile, HttpStatus.OK);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<Post> getPostByTitle(CreatePost request) {
+        Post postByTitle = postService.getPostByTitle(request.getTitle());
+        return new ResponseEntity<>(postByTitle, HttpStatus.OK);
+    }
+
     @GetMapping
     public ResponseEntity<Page<PostResponse>> getAllPosts(Pageable pageable) {
 
