@@ -9,7 +9,6 @@ window.Newsfeed = {
             let id = response;
             Newsfeed.getUserById(response);
             Newsfeed.getMotorById(response);
-            // Newsfeed.createPost(response);
         })
     },
 
@@ -49,44 +48,50 @@ window.Newsfeed = {
     },
 
     getUserByUsername: function () {
-        let username =$("#search").val();
+        let username = $("#search").val();
 
         $.ajax({
-            url: Newsfeed.API_URL + "/user/?username="+ username,
+            url: Newsfeed.API_URL + "/user/?username=" + username,
             method: "GET",
         }).done(function (user) {
             console.log(user)
         });
     },
 
-    createPost: function (id) {
-        let requestBody = {
-            title: $("#exampleTextarea1").val(),
-            content: $("#exampleTextarea2").val(),
-            imageUrl: "",
-            userId: id
-        };
-
+    createPost: function () {
         $.ajax({
-            url: Newsfeed.API_URL + "/post",
-            method: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(requestBody)
-        }).done(function (user) {
-            console.log(user)
-        });
+            url: Newsfeed.API_URL + "/user/user",
+            method: "GET"
+        }).done(function (response) {
 
+            let requestBody = {
+                title: $("#exampleTextarea1").val(),
+                content: $("#exampleTextarea2").val(),
+                imageUrl: "",
+                userId: response
+            };
+
+            $.ajax({
+                url: Newsfeed.API_URL + "/post",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(requestBody)
+            }).done(function (user) {
+                console.log(user);
+                location.reload();
+            });
+        });
     },
 
-    // getPosts: function () {
-    //     $.ajax({
-    //         url: Newsfeed.API_URL + "/posts",
-    //         method: "GET"
-    //     }).done(function (response) {
-    //         console.log(response);
-    //         Newsfeed.displayPosts(JSON.parse(response).content);
-    //     })
-    // },
+    getPosts: function () {
+        $.ajax({
+            url: Newsfeed.API_URL + "/post",
+            method: "GET"
+        }).done(function (response) {
+            console.log(response);
+
+        })
+    },
     //
     // displayPosts: function (posts) {
     //     let postsHtml = '';
@@ -143,6 +148,6 @@ window.Newsfeed = {
     },
 
 };
-// Newsfeed.getPosts();
+Newsfeed.getPosts();
 Newsfeed.getUserSession();
 Newsfeed.bindEvents();
