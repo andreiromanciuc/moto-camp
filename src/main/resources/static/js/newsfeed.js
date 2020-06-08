@@ -3,12 +3,13 @@ window.Newsfeed = {
 
     getUserSession: function () {
         $.ajax({
-            url: Newsfeed.API_URL +"/user/user",
+            url: Newsfeed.API_URL + "/user/user",
             method: "GET"
         }).done(function (response) {
             let id = response;
             Newsfeed.getUserById(response);
             Newsfeed.getMotorById(response);
+            // Newsfeed.createPost(response);
         })
     },
 
@@ -27,7 +28,7 @@ window.Newsfeed = {
     },
 
     displayUserName: function (user) {
-    return`<h5><a href="/timeline" class="profile-name" data-id=${user.id}>${user.username}</a></h5>`
+        return `<h5><a href="/timeline" class="profile-name" data-id=${user.id}>${user.username}</a></h5>`
     },
 
     getMotorById: function (id) {
@@ -35,37 +36,48 @@ window.Newsfeed = {
             url: Newsfeed.API_URL + "/motorcycle/" + id,
             method: "GET"
         }).done(function (motor) {
-           $(".profile-card .moto-photo").html(Newsfeed.displayMotorProfilePhoto(motor));
-           $(".profile-card .moto-name").html(Newsfeed.displayMotorUsername(motor));
+            $(".profile-card .moto-photo").html(Newsfeed.displayMotorProfilePhoto(motor));
+            $(".profile-card .moto-name").html(Newsfeed.displayMotorUsername(motor));
         });
     },
 
     displayMotorProfilePhoto: function (motor) {
-    return `<img src="${motor.imageUrl}" alt="moto_img" class="moto-photo">`
+        return `<img src="${motor.imageUrl}" alt="moto_img" class="moto-photo">`
     },
     displayMotorUsername: function (motor) {
-        return`<h5><a href="#" class="moto-name">${motor.userName}</a></h5>`
+        return `<h5><a href="#" class="moto-name">${motor.userName}</a></h5>`
     },
 
     getUserByUsername: function () {
-        let requestBody = {
-        username: $(".form-control").val(),
-        };
+        let username =$("#search").val();
+
         $.ajax({
-            url: Newsfeed.API_URL + "/user/",
+            url: Newsfeed.API_URL + "/user/?username="+ username,
             method: "GET",
-            contentType: "application/json",
-            data: JSON.stringify(requestBody)
         }).done(function (user) {
             console.log(user)
         });
     },
 
+    createPost: function (id) {
+        let requestBody = {
+            title: $("#exampleTextarea1").val(),
+            content: $("#exampleTextarea2").val(),
+            imageUrl: "",
+            userId: id
+        };
 
-    // displayMotorProfilePhoto: function (user) {
-    //
-    // }
-    //
+        $.ajax({
+            url: Newsfeed.API_URL + "/post",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(requestBody)
+        }).done(function (user) {
+            console.log(user)
+        });
+
+    },
+
     // getPosts: function () {
     //     $.ajax({
     //         url: Newsfeed.API_URL + "/posts",
@@ -122,6 +134,11 @@ window.Newsfeed = {
             Newsfeed.getUserByUsername();
 
         });
+
+        $("#btn-publish").click(function (event) {
+            event.preventDefault();
+            Newsfeed.createPost();
+        })
 
     },
 

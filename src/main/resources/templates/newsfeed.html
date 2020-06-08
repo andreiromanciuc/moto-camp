@@ -47,7 +47,7 @@
                     <div class="form-group">
                         <i class="icon ion-android-search"></i>
                         <label>
-                            <input type="text" class="form-control" placeholder="Search  by username"><i class="fa fa-search" id="search-icon" aria-hidden="true"></i>
+                            <input type="text" id="search" class="form-control" placeholder="Search  by username"><i class="fa fa-search" id="search-icon" aria-hidden="true"></i>
                         </label>
                     </div>
                 </form>
@@ -75,28 +75,23 @@
 
                 <!-- Post Create Box
                 ================================================= -->
-                <div class="create-post">
+                <form class="create-post">
                     <div class="row">
                         <div class="col-md-7 col-sm-7">
                             <div class="form-group">
                                 <img src="images/users/user-1.jpg" alt="" class="profile-photo-md"/>
-                                <textarea name="texts" id="exampleTextarea" cols="30" rows="1" class="form-control"
-                                          placeholder="Write what you wish"></textarea>
+                                <textarea name="texts" id="exampleTextarea1" cols="30" rows="1" class="form-control"
+                                          placeholder="Title of the post"></textarea>
+                                <textarea name="texts" id="exampleTextarea2" cols="30" rows="1" class="form-control"
+                                          placeholder="Content of the post"></textarea>
                             </div>
                         </div>
                         <div class="col-md-5 col-sm-5">
-                            <div class="tools">
-                                <ul class="publishing-tools list-inline">
-                                    <li><a href="#"><i class="ion-compose"></i></a></li>
-                                    <li><a href="#"><i class="ion-images"></i></a></li>
-                                    <li><a href="#"><i class="ion-ios-videocam"></i></a></li>
-                                    <li><a href="#"><i class="ion-map"></i></a></li>
-                                </ul>
-                                <button class="btn btn-primary pull-right">Publish</button>
-                            </div>
+                            <i class="icon-picture"></i>
+                            <button id="btn-publish" class="btn btn-primary pull-right">Publish</button>
                         </div>
                     </div>
-                </div><!-- Post Create Box End-->
+                </form><!-- Post Create Box End-->
 
                 <!-- Post Content
                 ================================================= -->

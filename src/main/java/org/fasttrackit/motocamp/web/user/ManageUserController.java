@@ -40,7 +40,7 @@ public class ManageUserController {
     }
 
     @GetMapping
-    public ResponseEntity<UserResponse> getUserByUsername(@RequestBody CreateUser request) {
+    public ResponseEntity<UserResponse> getUserByUsername(CreateUser request) {
         UserResponse userByUsername = userService.getUserByUsername(request);
         return new ResponseEntity<>(userByUsername, HttpStatus.OK);
     }
