@@ -43,6 +43,8 @@ public class PostService {
         post.setTitle(request.getTitle());
         post.setImageUrl(request.getImageUrl());
         post.setDate(LocalDate.now());
+        post.setNameFromUser(user.getUsername());
+        post.setPhotoUser(user.getImageUrl());
 
         return postRepository.save(post);
 
@@ -62,6 +64,8 @@ public class PostService {
             dto.setDate(post.getDate());
             dto.setTitle(post.getTitle());
             dto.setImageUrl(post.getImageUrl());
+            dto.setNameFromUser(post.getNameFromUser());
+            dto.setPhotoUser(post.getPhotoUser());
 
             postDtos.add(dto);
         }
@@ -82,6 +86,8 @@ public class PostService {
             dto.setDate(post.getDate());
             dto.setTitle(post.getTitle());
             dto.setImageUrl(post.getImageUrl());
+            dto.setNameFromUser(post.getNameFromUser());
+            dto.setPhotoUser(post.getPhotoUser());
 
             postResponses.add(dto);
         }

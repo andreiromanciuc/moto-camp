@@ -8,6 +8,8 @@ public class PostResponse {
     private String title;
     private String content;
     private String imageUrl;
+    private String nameFromUser;
+    private String photoUser;
 
     public LocalDate getDate() {
         return date;
@@ -41,4 +43,19 @@ public class PostResponse {
         this.imageUrl = imageUrl;
     }
 
+    public String getNameFromUser() {
+        return nameFromUser;
+    }
+
+    public void setNameFromUser(String nameFromUser) {
+        this.nameFromUser = nameFromUser;
+    }
+
+    public String getPhotoUser() {
+        return photoUser;
+    }
+
+    public void setPhotoUser(String photoUser) {
+        this.photoUser = photoUser;
+    }
 }

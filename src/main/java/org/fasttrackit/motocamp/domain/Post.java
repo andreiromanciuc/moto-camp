@@ -1,7 +1,6 @@
 package org.fasttrackit.motocamp.domain;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
@@ -13,6 +12,8 @@ public class Post {
     private String title;
     private String content;
     private String imageUrl;
+    private String nameFromUser;
+    private String photoUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -64,5 +65,21 @@ public class Post {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getNameFromUser() {
+        return nameFromUser;
+    }
+
+    public void setNameFromUser(String nameFromUser) {
+        this.nameFromUser = nameFromUser;
+    }
+
+    public String getPhotoUser() {
+        return photoUser;
+    }
+
+    public void setPhotoUser(String imageUser) {
+        this.photoUser = imageUser;
     }
 }
