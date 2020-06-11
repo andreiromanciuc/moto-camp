@@ -1,6 +1,7 @@
 package org.fasttrackit.motocamp.web.user;
 
 import org.fasttrackit.motocamp.domain.User;
+import org.fasttrackit.motocamp.service.PostService;
 import org.fasttrackit.motocamp.service.UserService;
 import org.fasttrackit.motocamp.transfer.user.CreateUser;
 import org.fasttrackit.motocamp.transfer.user.UserResponse;
@@ -17,10 +18,12 @@ import java.security.Principal;
 public class ManageUserController {
 
     private final UserService userService;
+    private final PostService postService;
 
     @Autowired
-    public ManageUserController(UserService userService) {
+    public ManageUserController(UserService userService, PostService postService) {
         this.userService = userService;
+        this.postService = postService;
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
@@ -74,6 +77,8 @@ public class ManageUserController {
                 && request.getFullName() == null
                 && request.getImageUrl() != null){
             User user = userService.updateImageUrl(id, request);
+
+
             return new ResponseEntity<>(user, HttpStatus.OK);
         }
 

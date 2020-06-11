@@ -7,6 +7,7 @@ import org.fasttrackit.motocamp.persistance.PostRepository;
 import org.fasttrackit.motocamp.transfer.post.CreatePost;
 import org.fasttrackit.motocamp.transfer.post.PostResponse;
 import org.fasttrackit.motocamp.transfer.post.UpdatePost;
+import org.fasttrackit.motocamp.transfer.user.CreateUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,7 @@ public class PostService {
     public Page<PostResponse> getPostsForProfile(long id, Pageable pageable) {
         LOGGER.info("Retrieving posts for profile {}", id);
 
-        Page<Post> postsPage = postRepository.getAllByUser_Id(id, pageable);
+        Page<Post> postsPage = postRepository.getAllByUser_IdOrderByDateDesc(id, pageable);
 
         List<PostResponse> postDtos = new ArrayList<>();
 
@@ -114,6 +115,8 @@ public class PostService {
         post.setContent(request.getContent());
         return postRepository.save(post);
     }
+
+
 
     public void deletePost(long id) {
         LOGGER.info("Removing post {}", id);

@@ -12,4 +12,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     Post getByTitle(String title);
 
+    Page<Post> getAllByUser_IdOrderByDateDesc (long profileId, Pageable pageable);
+
 }

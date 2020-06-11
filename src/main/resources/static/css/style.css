@@ -736,7 +736,7 @@ textarea {
     display: grid;
     grid-template-columns: auto auto;
     grid-template-rows: auto auto;
-    background: linear-gradient(to bottom, #3259E1, rgba(34, 188, 54, 0.8));
+    background: linear-gradient(to bottom, #3694C9, #41F8D9);
     background-size: cover;
     width: 100%;
     min-height: 90px;

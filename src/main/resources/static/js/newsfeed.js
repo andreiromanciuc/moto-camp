@@ -6,7 +6,6 @@ window.Newsfeed = {
             url: Newsfeed.API_URL + "/user/user",
             method: "GET"
         }).done(function (response) {
-            let id = response;
             Newsfeed.getUserById(response);
             Newsfeed.getMotorById(response);
         })
@@ -17,11 +16,17 @@ window.Newsfeed = {
             url: Newsfeed.API_URL + "/user/" + id,
             method: "GET"
         }).done(function (user) {
-            $(".profile-card .profile-photo").html(Newsfeed.displayUserProfilePhoto(user.content));
-            $(".profile-card .profile-name").html(Newsfeed.displayUserName(user.content));
+            // console.log(user);
+            $(".profile-photo").html(Newsfeed.displayUserProfilePhoto(user));
+            $(".profile-name").html(Newsfeed.displayUserName(user));
+            $(".photo-form").html(Newsfeed.displayUsersProfilePhotoToFormGroup(user));
+
         });
     },
 
+    displayUsersProfilePhotoToFormGroup: function (user) {
+        return`<img src=${user.imageUrl} alt="" class="profile-photo-md"/>`
+    },
     displayUserProfilePhoto: function (user) {
         return `<img src=${user.imageUrl}  alt="user" class="profile-photo"/>`
     },
@@ -35,8 +40,8 @@ window.Newsfeed = {
             url: Newsfeed.API_URL + "/motorcycle/" + id,
             method: "GET"
         }).done(function (motor) {
-            $(".profile-card .moto-photo").html(Newsfeed.displayMotorProfilePhoto(JSON.parse(motor)));
-            $(".profile-card .moto-name").html(Newsfeed.displayMotorUsername(JSON.parse(motor)));
+            $(".moto-photo").html(Newsfeed.displayMotorProfilePhoto(motor));
+            $(".moto-name").html(Newsfeed.displayMotorUsername(motor));
         });
     },
 
@@ -86,7 +91,7 @@ window.Newsfeed = {
     searchPostByTitle: function () {
         let title = $("#search").val();
         $.ajax({
-            url: Newsfeed.API_URL + "/post/search?title="+title,
+            url: Newsfeed.API_URL + "/post/search?title=" + title,
             method: "GET"
         }).done(function (response) {
             console.log(response);
@@ -103,6 +108,15 @@ window.Newsfeed = {
         })
     },
 
+    getPostsForUser: function (id) {
+        $.ajax({
+            url: Newsfeed.API_URL + "/post/"+id,
+            method: "GET"
+        }).done(function (response) {
+            location.replace("/timeline");
+            Newsfeed.displayPosts(response.content);
+        })
+    },
 
     displayPosts: function (posts) {
         let postsHtml = '';
@@ -113,7 +127,7 @@ window.Newsfeed = {
     },
 
     getHtmlForOnePost: function (post) {
-        return `<div class="post-container" data-id=${post.id}>
+        return `<div class="post-container">
                         <img src="${post.photoUser}" alt="user" class="profile-photo-md pull-left"/>
                         <div class="post-detail">
                             <div class="user-info">
@@ -121,12 +135,13 @@ window.Newsfeed = {
                                         class="following">${post.title}</span></h5>
                                 <p class="text-muted">${post.date}</p>
                             </div>
-                            <div class="reaction">
+                            <div class="reaction" data-postId=${post.id}>
                                 <i id="post-delete" class="fa fa-trash" aria-hidden="true"></i>
                             </div>
                             <div class="line-divider"></div>
                             <div class="post-text">
-                                <p><i class="em em-thumbsup"></i> <i class="em em-thumbsup"></i>${post.content}</p>
+                                <p>${post.content}</p>
+                                <input id="update-post" placeholder="Write update to post" style="visibility: hidden">
                             </div>
                             <div class="line-divider"></div>
                             <img class="post-photo" src="${post.imageUrl}">
@@ -139,11 +154,36 @@ window.Newsfeed = {
                                     magna aliqua. Ut enim ad minim veniam <i class="em em-muscle"></i></p>
                             </div>
                             <div class="post-comment">
-                                <img src="images/users/user-1.jpg" alt="" class="profile-photo-sm"/>
+                                <img src="${post.photoUser}" alt="" class="profile-photo-sm"/>
                                 <input type="text" class="form-control" placeholder="Post a comment">
                             </div>
                         </div>
                     </div>`;
+    },
+
+    updatePost: function (id, content) {
+        let requestBody = {
+            content: content,
+            postId: id
+        };
+
+        $.ajax({
+            url: Newsfeed.API_URL + "/post" + requestBody,
+            method: "DELETE",
+            contentType: "application/json",
+            data: JSON.stringify(requestBody)
+        }).done(function () {
+            Newsfeed.getPosts();
+        })
+    },
+
+    deletePost: function (id) {
+        $.ajax({
+            url: Newsfeed.API_URL + "/post/" + id,
+            method: "DELETE"
+        }).done(function () {
+            Newsfeed.getPosts();
+        })
     },
 
 
@@ -158,7 +198,19 @@ window.Newsfeed = {
         $("#btn-publish").click(function (event) {
             event.preventDefault();
             Newsfeed.createPost();
-        })
+        });
+
+        $("#post-feed").delegate(".reaction", "click", function () {
+            let id = $(this).data("postId");
+            Newsfeed.deletePost(id);
+        });
+
+        $("#post-feed").delegate(".post-text", "click", function () {
+            let content =  $("#update-post").val().css("visibility", "visible");
+             // = $("#update-post").val();
+            let id = $(this).val();
+            Newsfeed.updatePost(id, content);
+        });
 
     },
 
