@@ -8,6 +8,7 @@ import org.fasttrackit.motocamp.transfer.post.CreatePost;
 import org.fasttrackit.motocamp.transfer.post.PostResponse;
 import org.fasttrackit.motocamp.transfer.post.UpdatePost;
 import org.fasttrackit.motocamp.transfer.user.CreateUser;
+import org.fasttrackit.motocamp.transfer.user.UserResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -116,7 +118,20 @@ public class PostService {
         return postRepository.save(post);
     }
 
+    public void updateUserPhotoToPost(long id, CreateUser request) {
+        LOGGER.info("Update photo to user");
 
+        List<Post> allByUser_id = postRepository.getAllByUser_Id(id);
+
+        List<Post> updatedPosts = new ArrayList<>();
+
+        for (Post post  : allByUser_id) {
+            post.setPhotoUser(request.getImageUrl());
+            updatedPosts.add(post);
+        }
+        postRepository.saveAll(updatedPosts);
+
+    }
 
     public void deletePost(long id) {
         LOGGER.info("Removing post {}", id);

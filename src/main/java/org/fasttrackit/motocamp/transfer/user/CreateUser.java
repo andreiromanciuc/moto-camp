@@ -55,13 +55,4 @@ public class CreateUser {
         this.imageUrl = imageUrl;
     }
 
-    @Override
-    public String toString() {
-        return "CreateUser{" +
-                "username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", fulName='" + fullName + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
-                '}';
-    }
 }

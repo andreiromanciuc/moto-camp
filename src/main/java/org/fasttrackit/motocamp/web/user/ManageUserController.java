@@ -77,7 +77,7 @@ public class ManageUserController {
                 && request.getFullName() == null
                 && request.getImageUrl() != null){
             User user = userService.updateImageUrl(id, request);
-
+            postService.updateUserPhotoToPost(id, request);
 
             return new ResponseEntity<>(user, HttpStatus.OK);
         }
