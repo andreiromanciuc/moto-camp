@@ -44,6 +44,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/newsfeed/**").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/newsfeed/**").authenticated()
                 .antMatchers(HttpMethod.PUT, "/newsfeed/**").authenticated()
+                .antMatchers(HttpMethod.GET, "/timeline/**").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/timeline/**").authenticated()
+                .antMatchers(HttpMethod.PUT, "/timeline/**").authenticated()
                 .anyRequest().authenticated()
                 .and()
 //                .httpBasic();

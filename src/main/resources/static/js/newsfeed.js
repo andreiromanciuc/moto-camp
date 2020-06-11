@@ -17,8 +17,8 @@ window.Newsfeed = {
             url: Newsfeed.API_URL + "/user/" + id,
             method: "GET"
         }).done(function (user) {
-            $(".profile-card .profile-photo").html(Newsfeed.displayUserProfilePhoto(JSON.parse(user)));
-            $(".profile-card .profile-name").html(Newsfeed.displayUserName(JSON.parse(user)));
+            $(".profile-card .profile-photo").html(Newsfeed.displayUserProfilePhoto(user.content));
+            $(".profile-card .profile-name").html(Newsfeed.displayUserName(user.content));
         });
     },
 
@@ -47,7 +47,7 @@ window.Newsfeed = {
         return `<h5><a href="#" class="moto-name">${motor.userName}</a></h5>`
     },
 
-    getUserByUsername: function () {
+    searchUserByUsername: function () {
         let username = $("#search").val();
 
         $.ajax({
@@ -77,7 +77,7 @@ window.Newsfeed = {
                 contentType: "application/json",
                 data: JSON.stringify(requestBody)
             }).done(function (user) {
-                console.log(user);
+                // console.log(user);
                 location.reload();
             });
         });
@@ -99,7 +99,7 @@ window.Newsfeed = {
             url: Newsfeed.API_URL + "/post",
             method: "GET"
         }).done(function (response) {
-            Newsfeed.displayPosts(JSON.parse(response));
+            Newsfeed.displayPosts(response.content);
         })
     },
 
@@ -151,7 +151,7 @@ window.Newsfeed = {
         $("#search-icon").click(function (event) {
             event.preventDefault();
 
-            Newsfeed.getUserByUsername();
+            Newsfeed.searchUserByUsername();
             Newsfeed.searchPostByTitle();
         });
 
