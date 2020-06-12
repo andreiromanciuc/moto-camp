@@ -15,13 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class PostService {
@@ -72,6 +71,8 @@ public class PostService {
 
             postDtos.add(dto);
         }
+
+        postDtos.sort(Comparator.comparing(PostResponse::getDate).reversed());
         return new PageImpl<>(postDtos, pageable, postsPage.getTotalElements());
     }
 
@@ -93,7 +94,11 @@ public class PostService {
             dto.setPhotoUser(post.getPhotoUser());
 
             postResponses.add(dto);
+
         }
+
+        postResponses.sort(Comparator.comparing(PostResponse::getDate).reversed());
+
         return new PageImpl<>(postResponses, pageable, posts.getTotalElements());
     }
 
