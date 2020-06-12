@@ -93,8 +93,8 @@ window.Newsfeed = {
         $.ajax({
             url: Newsfeed.API_URL + "/post/search?title=" + title,
             method: "GET"
-        }).done(function (response) {
-            console.log(response);
+        }).done(function (post) {
+            $("#post-feed").html(Newsfeed.getHtmlForOnePost(post));
 
         })
     },
