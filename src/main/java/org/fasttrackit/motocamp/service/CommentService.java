@@ -7,6 +7,7 @@ import org.fasttrackit.motocamp.exception.ResourceNotFoundException;
 import org.fasttrackit.motocamp.persistance.CommentRepository;
 import org.fasttrackit.motocamp.transfer.comment.CommentResponse;
 import org.fasttrackit.motocamp.transfer.comment.CreateComment;
+import org.fasttrackit.motocamp.transfer.user.UserResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,9 +84,21 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
-    public void deleteComment(long id) {
-        LOGGER.info("Delete comment {}", id);
+    public void deleteComment(long id, Principal principal) {
+
+        String principalName = principal.getName();
+        UserResponse user = userService.getUserBySession(principalName);
+        long principalId = user.getId();
+
         Comment comment = getComment(id);
-        commentRepository.delete(comment);
+        long userId = comment.getUser().getId();
+
+        if (principalId == userId) {
+            LOGGER.info("Delete comment {}", id);
+            commentRepository.delete(comment);
+        } else {
+            LOGGER.info("This is not your comment");
+        }
+
     }
 }

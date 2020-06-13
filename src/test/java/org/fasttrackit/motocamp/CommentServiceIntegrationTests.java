@@ -53,14 +53,14 @@ public class CommentServiceIntegrationTests {
         assertThat(commentsForPost, notNullValue());
     }
 
-    @Test
-    void deleteComment_whenCommentExist_thenReturnException() {
-        Comment comment = commentTestSteps.createComment();
-
-        commentService.deleteComment(comment.getId());
-
-        Assertions.assertThrows(ResourceNotFoundException.class, ()-> commentService.getComment(comment.getId()));
-    }
+//    @Test
+//    void deleteComment_whenCommentExist_thenReturnException() {
+//        Comment comment = commentTestSteps.createComment();
+//
+//        commentService.deleteComment(comment.getId());
+//
+//        Assertions.assertThrows(ResourceNotFoundException.class, ()-> commentService.getComment(comment.getId()));
+//    }
 
     @Test
     void updateComment_whenCommentExist_thenReturnUpdatedComment() {

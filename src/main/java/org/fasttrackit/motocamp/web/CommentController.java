@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 
 @CrossOrigin
 @RestController
@@ -43,5 +45,11 @@ public class CommentController {
     public ResponseEntity<Comment> updateComment(@PathVariable long id, @RequestBody CreateComment request) {
         Comment comment = commentService.updateComment(id, request);
         return new ResponseEntity<>(comment, HttpStatus.OK);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Comment> deleteComment(@PathVariable long id, Principal principal) {
+        commentService.deleteComment(id, principal);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
