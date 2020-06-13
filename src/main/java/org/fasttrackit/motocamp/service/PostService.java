@@ -19,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -34,6 +35,7 @@ public class PostService {
         this.postRepository = postRepository;
         this.userService = userService;
     }
+
     @Transactional
     public Post createPost(CreatePost request) {
         LOGGER.info("Creating post from profile {}", request.getUserId());
@@ -114,6 +116,7 @@ public class PostService {
 
         return postRepository.getByTitle(request);
     }
+
     public Post updatePost(UpdatePost request) {
         LOGGER.info("Updating post {}", request.getPostId());
 
@@ -130,7 +133,7 @@ public class PostService {
 
         List<Post> updatedPosts = new ArrayList<>();
 
-        for (Post post  : allByUser_id) {
+        for (Post post : allByUser_id) {
             post.setPhotoUser(request.getImageUrl());
             updatedPosts.add(post);
         }
@@ -138,10 +141,23 @@ public class PostService {
 
     }
 
-    public void deletePost(long id) {
-        LOGGER.info("Removing post {}", id);
+    public void deletePost(long id, Principal principal) {
+
+        String principalName = principal.getName();
+
+        UserResponse user = userService.getUserBySession(principalName);
+        long principalId = user.getId();
+
         Post post = getPost(id);
-        postRepository.delete(post);
+        long userId = post.getUser().getId();
+
+        if (principalId == userId) {
+            LOGGER.info("Removing post {}", id);
+            postRepository.delete(post);
+        } else {
+            LOGGER.info("This is not your post");
+        }
+
     }
 
 }

@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 
 @CrossOrigin
 @RestController
@@ -57,8 +59,8 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable long id) {
-        postService.deletePost(id);
+    public ResponseEntity<Void> deletePost(@PathVariable long id, Principal principal) {
+        postService.deletePost(id, principal);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
