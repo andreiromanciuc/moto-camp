@@ -206,7 +206,8 @@ window.Newsfeed = {
         });
 
         $("#post-feed").delegate(".post-text", "click", function () {
-            let content =  $("#update-post").val().css("visibility", "visible");
+            $("#update-post").css("visibility", "visible");
+            let content =  $("#update-post").val();
              // = $("#update-post").val();
             let id = $(this).val();
             Newsfeed.updatePost(id, content);

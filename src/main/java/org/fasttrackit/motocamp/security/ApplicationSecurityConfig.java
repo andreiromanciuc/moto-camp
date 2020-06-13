@@ -49,13 +49,13 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT, "/timeline/**").authenticated()
                 .anyRequest().authenticated()
                 .and()
-                .httpBasic();
-//                .formLogin()
-//                .loginPage("/login").permitAll()
-//                .defaultSuccessUrl("/newsfeed").permitAll()
-//                .and()
-//                .logout()
-//                .logoutSuccessUrl("/login");
+//                .httpBasic();
+                .formLogin()
+                .loginPage("/login").permitAll()
+                .defaultSuccessUrl("/newsfeed").permitAll()
+                .and()
+                .logout()
+                .logoutSuccessUrl("/login");
     }
 
 

@@ -15,6 +15,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.security.Principal;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
@@ -53,14 +55,20 @@ public class CommentServiceIntegrationTests {
         assertThat(commentsForPost, notNullValue());
     }
 
-//    @Test
-//    void deleteComment_whenCommentExist_thenReturnException() {
-//        Comment comment = commentTestSteps.createComment();
-//
-//        commentService.deleteComment(comment.getId());
-//
-//        Assertions.assertThrows(ResourceNotFoundException.class, ()-> commentService.getComment(comment.getId()));
-//    }
+    @Test
+    void deleteComment_whenCommentExist_thenReturnException() {
+        Comment comment = commentTestSteps.createComment();
+        Principal principal = new Principal() {
+            @Override
+            public String getName() {
+                return null;
+            }
+        };
+
+        commentService.deleteComment(comment.getId(), principal);
+
+        Assertions.assertThrows(ResourceNotFoundException.class, ()-> commentService.getComment(comment.getId()));
+    }
 
     @Test
     void updateComment_whenCommentExist_thenReturnUpdatedComment() {
