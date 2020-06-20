@@ -4,12 +4,21 @@ package org.fasttrackit.motocamp.transfer.post;
 import java.time.LocalDate;
 
 public class PostResponse {
+    private Long id;
     private LocalDate date;
     private String title;
     private String content;
     private String imageUrl;
     private String nameFromUser;
     private String photoUser;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public LocalDate getDate() {
         return date;

@@ -6,6 +6,7 @@ window.Newsfeed = {
             url: Newsfeed.API_URL + "/user/user",
             method: "GET"
         }).done(function (response) {
+            // console.log(response);
             Newsfeed.getUserById(response);
             Newsfeed.getMotorById(response);
         })
@@ -59,10 +60,22 @@ window.Newsfeed = {
             url: Newsfeed.API_URL + "/user/?username=" + username,
             method: "GET",
         }).done(function (user) {
-            console.log(user)
+            // console.log(user);
+            Newsfeed.displayUserAfterSearch(user);
         });
+
     },
 
+    displayUserAfterSearch: function (user) {
+        return`<div class="post-container">
+                        <img src="${user.profileImageUrl}" alt="user" class="profile-photo-md pull-left"/>
+                        <div class="post-detail">
+                            <div class="user-info">
+                                <h5><a href="timeline.html" class="profile-link">${user.username}</a></h5>
+                            </div>
+                        </div>
+                    </div>`
+    },
     createPost: function () {
         $.ajax({
             url: Newsfeed.API_URL + "/user/user",
@@ -104,6 +117,7 @@ window.Newsfeed = {
             url: Newsfeed.API_URL + "/post",
             method: "GET"
         }).done(function (response) {
+            console.log(response);
             Newsfeed.displayPosts(response.content);
         })
     },
@@ -133,7 +147,7 @@ window.Newsfeed = {
                             <div class="user-info">
                                 <h5><a href="timeline.html" class="profile-link">${post.nameFromUser}</a> <span
                                         class="following">${post.title}</span></h5>
-                                <p class="text-muted">${post.date}</p>
+                                <p class="text-muted">${post.date.year} / ${post.date.month} / ${post.date.dayOfMonth}</p> 
                             </div>
                             <div class="reaction" data-postId=${post.id}>
                                 <i id="post-delete" class="fa fa-trash" aria-hidden="true"></i>
@@ -202,7 +216,7 @@ window.Newsfeed = {
 
         $("#post-feed").delegate(".reaction", "click", function () {
             let id = $(this).data("postId");
-            Newsfeed.deletePost(id);
+            console.log(id);
         });
 
         $("#post-feed").delegate(".post-text", "click", function () {

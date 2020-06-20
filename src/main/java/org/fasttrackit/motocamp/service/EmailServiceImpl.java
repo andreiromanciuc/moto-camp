@@ -15,8 +15,9 @@ public class EmailServiceImpl {
         this.emailSender = emailSender;
     }
 
-    public void sendSimpleMessage(
-            String to, String subject, String text) {
+    public void sendSimpleMessage(String to,
+                                  String subject,
+                                  String text) {
         LOGGER.info("Sending email");
 
         SimpleMailMessage message = new SimpleMailMessage();

@@ -70,11 +70,11 @@ public class PostService {
             dto.setImageUrl(post.getImageUrl());
             dto.setNameFromUser(post.getNameFromUser());
             dto.setPhotoUser(post.getPhotoUser());
+            dto.setId(post.getId());
 
             postDtos.add(dto);
         }
-
-        postDtos.sort(Comparator.comparing(PostResponse::getDate).reversed());
+        Collections.reverse(postDtos);
         return new PageImpl<>(postDtos, pageable, postsPage.getTotalElements());
     }
 
@@ -94,13 +94,13 @@ public class PostService {
             dto.setImageUrl(post.getImageUrl());
             dto.setNameFromUser(post.getNameFromUser());
             dto.setPhotoUser(post.getPhotoUser());
+            dto.setId(post.getId());
+
 
             postResponses.add(dto);
 
         }
-
-        postResponses.sort(Comparator.comparing(PostResponse::getDate).reversed());
-
+        Collections.reverse(postResponses);
         return new PageImpl<>(postResponses, pageable, posts.getTotalElements());
     }
 
