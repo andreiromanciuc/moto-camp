@@ -1,24 +1,30 @@
 package org.fasttrackit.motocamp.service.post;
 
+
+
 import org.fasttrackit.motocamp.domain.Post;
 import org.fasttrackit.motocamp.persistance.PostRepository;
 import org.fasttrackit.motocamp.service.CommentService;
+import org.fasttrackit.motocamp.service.UserService;
 import org.fasttrackit.motocamp.transfer.comment.CommentResponse;
 import org.fasttrackit.motocamp.transfer.post.PostResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.hibernate.bytecode.BytecodeLogger.LOGGER;
 
 @Service
 public class PostAndCommentService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
     private final PostRepository postRepository;
     private final CommentService commentService;
 

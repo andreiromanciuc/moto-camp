@@ -213,8 +213,8 @@ window.Newsfeed = {
         });
 
         $("#post-feed").delegate(".reaction", "click", function () {
-            let id = $(this).data("postId");
-            console.log(id);
+            let id = $(this).data("postid");
+            Newsfeed.deletePost(id);
         });
 
         $("#post-feed").delegate(".post-text", "click", function () {

@@ -100,6 +100,10 @@ public class CommentService {
         } else {
             LOGGER.info("This is not your comment");
         }
+    }
 
+    public void deleteAllCommentsWithAPost(long id) {
+        LOGGER.info("Deletig all comments for post {}", id);
+        commentRepository.deleteById(id);
     }
 }

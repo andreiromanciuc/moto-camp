@@ -25,8 +25,8 @@ public class UserTestSteps {
 
     public User createUser() {
         CreateUser request = new CreateUser();
-        request.setEmail("andrei.romanciuc@gmail.c");
-        request.setUsername("riders");
+        request.setEmail("andrei.romanciuc@gma");
+        request.setUsername("dfsd");
         request.setPassword("asdg");
 
         User user = userService.createUser(request);
