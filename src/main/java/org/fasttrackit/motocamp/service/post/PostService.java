@@ -1,9 +1,10 @@
-package org.fasttrackit.motocamp.service;
+package org.fasttrackit.motocamp.service.post;
 
 import org.fasttrackit.motocamp.domain.Post;
 import org.fasttrackit.motocamp.domain.User;
 import org.fasttrackit.motocamp.exception.ResourceNotFoundException;
 import org.fasttrackit.motocamp.persistance.PostRepository;
+import org.fasttrackit.motocamp.service.UserService;
 import org.fasttrackit.motocamp.transfer.post.CreatePost;
 import org.fasttrackit.motocamp.transfer.post.PostResponse;
 import org.fasttrackit.motocamp.transfer.post.UpdatePost;
@@ -76,32 +77,6 @@ public class PostService {
         }
         Collections.reverse(postDtos);
         return new PageImpl<>(postDtos, pageable, postsPage.getTotalElements());
-    }
-
-    @Transactional
-    public Page<PostResponse> getAllPosts(Pageable pageable) {
-        LOGGER.info("Retrieving all posts for feed");
-
-        Page<Post> posts = postRepository.findAll(pageable);
-
-        List<PostResponse> postResponses = new ArrayList<>();
-
-        for (Post post : posts.getContent()) {
-            PostResponse dto = new PostResponse();
-            dto.setContent(post.getContent());
-            dto.setDate(post.getDate());
-            dto.setTitle(post.getTitle());
-            dto.setImageUrl(post.getImageUrl());
-            dto.setNameFromUser(post.getNameFromUser());
-            dto.setPhotoUser(post.getPhotoUser());
-            dto.setId(post.getId());
-
-
-            postResponses.add(dto);
-
-        }
-        Collections.reverse(postResponses);
-        return new PageImpl<>(postResponses, pageable, posts.getTotalElements());
     }
 
     public Post getPost(long id) {

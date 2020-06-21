@@ -2,7 +2,7 @@ package org.fasttrackit.motocamp.steps;
 
 import org.fasttrackit.motocamp.domain.Post;
 import org.fasttrackit.motocamp.domain.User;
-import org.fasttrackit.motocamp.service.PostService;
+import org.fasttrackit.motocamp.service.post.PostService;
 import org.fasttrackit.motocamp.transfer.post.CreatePost;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

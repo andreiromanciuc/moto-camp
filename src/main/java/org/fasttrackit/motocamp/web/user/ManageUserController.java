@@ -1,7 +1,7 @@
 package org.fasttrackit.motocamp.web.user;
 
 import org.fasttrackit.motocamp.domain.User;
-import org.fasttrackit.motocamp.service.PostService;
+import org.fasttrackit.motocamp.service.post.PostService;
 import org.fasttrackit.motocamp.service.UserService;
 import org.fasttrackit.motocamp.transfer.user.CreateUser;
 import org.fasttrackit.motocamp.transfer.user.UserResponse;

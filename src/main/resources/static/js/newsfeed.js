@@ -162,10 +162,8 @@ window.Newsfeed = {
                             <br>
                             <div class="line-divider"></div>
                             <div class="post-comment">
-                                <img src="images/users/user-12.jpg" alt="" class="profile-photo-sm"/>
-                                <p><a href="timeline.html" class="profile-link">Cris </a> Lorem ipsum dolor sit amet,
-                                    consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                                    magna aliqua. Ut enim ad minim veniam <i class="em em-muscle"></i></p>
+                                <img src=${post.comments.imageUrl} alt="" class="profile-photo-sm"/>
+                                <p><a href="timeline.html" class="profile-link">${post.comments.username}</a> ${post.comments.content} <i class="em em-muscle"></i></p>
                             </div>
                             <div class="post-comment">
                                 <img src="${post.photoUser}" alt="" class="profile-photo-sm"/>

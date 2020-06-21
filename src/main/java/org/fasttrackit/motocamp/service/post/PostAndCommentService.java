@@ -1,0 +1,58 @@
+package org.fasttrackit.motocamp.service.post;
+
+import org.fasttrackit.motocamp.domain.Post;
+import org.fasttrackit.motocamp.persistance.PostRepository;
+import org.fasttrackit.motocamp.service.CommentService;
+import org.fasttrackit.motocamp.transfer.comment.CommentResponse;
+import org.fasttrackit.motocamp.transfer.post.PostResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static org.hibernate.bytecode.BytecodeLogger.LOGGER;
+
+@Service
+public class PostAndCommentService {
+    private final PostRepository postRepository;
+    private final CommentService commentService;
+
+    public PostAndCommentService(PostRepository postRepository, CommentService commentService) {
+        this.postRepository = postRepository;
+        this.commentService = commentService;
+    }
+
+
+    @Transactional
+    public Page<PostResponse> getAllPosts(Pageable pageable) {
+        LOGGER.info("Retrieving all posts for feed");
+
+        Page<Post> posts = postRepository.findAll(pageable);
+
+        List<PostResponse> postResponses = new ArrayList<>();
+
+        for (Post post : posts.getContent()) {
+            PostResponse dto = new PostResponse();
+            dto.setContent(post.getContent());
+            dto.setDate(post.getDate());
+            dto.setTitle(post.getTitle());
+            dto.setImageUrl(post.getImageUrl());
+            dto.setNameFromUser(post.getNameFromUser());
+            dto.setPhotoUser(post.getPhotoUser());
+            dto.setId(post.getId());
+
+            Page<CommentResponse> commentsForPost = commentService.getCommentsForPost(post.getId(), pageable);
+            dto.setComments(commentsForPost);
+
+            postResponses.add(dto);
+
+        }
+        Collections.reverse(postResponses);
+        return new PageImpl<>(postResponses, pageable, posts.getTotalElements());
+    }
+}

@@ -1,6 +1,9 @@
 package org.fasttrackit.motocamp.transfer.post;
 
 
+import org.fasttrackit.motocamp.transfer.comment.CommentResponse;
+import org.springframework.data.domain.Page;
+
 import java.time.LocalDate;
 
 public class PostResponse {
@@ -11,6 +14,16 @@ public class PostResponse {
     private String imageUrl;
     private String nameFromUser;
     private String photoUser;
+    private Page<CommentResponse> comments;
+
+
+    public Page<CommentResponse> getComments() {
+        return comments;
+    }
+
+    public void setComments(Page<CommentResponse> comments) {
+        this.comments = comments;
+    }
 
     public Long getId() {
         return id;

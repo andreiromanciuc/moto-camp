@@ -5,6 +5,7 @@ import org.fasttrackit.motocamp.domain.Post;
 import org.fasttrackit.motocamp.domain.User;
 import org.fasttrackit.motocamp.exception.ResourceNotFoundException;
 import org.fasttrackit.motocamp.persistance.CommentRepository;
+import org.fasttrackit.motocamp.service.post.PostService;
 import org.fasttrackit.motocamp.transfer.comment.CommentResponse;
 import org.fasttrackit.motocamp.transfer.comment.CreateComment;
 import org.fasttrackit.motocamp.transfer.user.UserResponse;
@@ -55,7 +56,7 @@ public class CommentService {
     public Page<CommentResponse> getCommentsForPost(long postId, Pageable pageable) {
         LOGGER.info("Retrieving comments for post {}", postId);
 
-        Page<Comment> commentsByPost = commentRepository.getCommentsByPost(postId, pageable);
+        Page<Comment> commentsByPost = commentRepository.getAllByPost_Id(postId, pageable);
 
         List<CommentResponse> commentDtos = new ArrayList<>();
 

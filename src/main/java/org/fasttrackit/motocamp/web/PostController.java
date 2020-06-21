@@ -1,7 +1,8 @@
 package org.fasttrackit.motocamp.web;
 
 import org.fasttrackit.motocamp.domain.Post;
-import org.fasttrackit.motocamp.service.PostService;
+import org.fasttrackit.motocamp.service.post.PostAndCommentService;
+import org.fasttrackit.motocamp.service.post.PostService;
 import org.fasttrackit.motocamp.transfer.post.CreatePost;
 import org.fasttrackit.motocamp.transfer.post.PostResponse;
 import org.fasttrackit.motocamp.transfer.post.UpdatePost;
@@ -20,10 +21,12 @@ import java.security.Principal;
 @RequestMapping("/newsfeed/post")
 public class PostController {
     private final PostService postService;
+    private final PostAndCommentService postAndCommentService;
 
     @Autowired
-    public PostController(PostService postService) {
+    public PostController(PostService postService, PostAndCommentService postAndCommentService) {
         this.postService = postService;
+        this.postAndCommentService = postAndCommentService;
     }
 
     @PostMapping
@@ -48,7 +51,7 @@ public class PostController {
     @GetMapping
     public ResponseEntity<Page<PostResponse>> getAllPosts(Pageable pageable) {
 
-        Page<PostResponse> allPosts = postService.getAllPosts(pageable);
+        Page<PostResponse> allPosts = postAndCommentService.getAllPosts(pageable);
         return new ResponseEntity<>(allPosts, HttpStatus.OK);
     }
 
