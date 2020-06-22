@@ -5,11 +5,8 @@ import javax.validation.constraints.NotNull;
 
 public class CreateUser {
 
-    @NotNull
     private String username;
-    @NotNull
     private String email;
-    @NotNull
     private String password;
     private String fullName;
     private String imageUrl;

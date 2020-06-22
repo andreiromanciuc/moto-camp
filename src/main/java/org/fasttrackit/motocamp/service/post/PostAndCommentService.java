@@ -61,4 +61,22 @@ public class PostAndCommentService {
         Collections.reverse(postResponses);
         return new PageImpl<>(postResponses, pageable, posts.getTotalElements());
     }
+
+    public PostResponse getPostByTitle(String request, Pageable pageable) {
+        LOGGER.info("Retrieving post by title {}", request);
+        Post byTitle = postRepository.getByTitle(request);
+        Page<CommentResponse> commentsForPost = commentService.getCommentsForPost(byTitle.getId(), pageable);
+
+        PostResponse postResponse = new PostResponse();
+        postResponse.setId(byTitle.getId());
+        postResponse.setTitle(byTitle.getTitle());
+        postResponse.setContent(byTitle.getContent());
+        postResponse.setDate(byTitle.getDate());
+        postResponse.setImageUrl(byTitle.getImageUrl());
+        postResponse.setPhotoUser(byTitle.getPhotoUser());
+        postResponse.setNameFromUser(byTitle.getNameFromUser());
+        postResponse.setComments(commentsForPost);
+
+        return postResponse;
+    }
 }

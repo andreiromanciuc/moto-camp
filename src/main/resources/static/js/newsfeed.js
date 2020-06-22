@@ -58,10 +58,11 @@ window.Newsfeed = {
 
         $.ajax({
             url: Newsfeed.API_URL + "/user/?username=" + username,
-            method: "GET",
+            method: "GET"
         }).done(function (user) {
-            // console.log(user);
-            Newsfeed.displayUserAfterSearch(user);
+            console.log(user);
+
+            // Newsfeed.displayUserAfterSearch(user.content);
         });
 
     },
@@ -108,7 +109,6 @@ window.Newsfeed = {
             method: "GET"
         }).done(function (post) {
             $("#post-feed").html(Newsfeed.getHtmlForOnePost(post));
-
         })
     },
 

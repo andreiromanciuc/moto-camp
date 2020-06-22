@@ -85,11 +85,7 @@ public class PostService {
                 .orElseThrow(() -> new ResourceNotFoundException("Post " + id + " not found."));
     }
 
-    public Post getPostByTitle(String request) {
-        LOGGER.info("Retrieving post by title {}", request);
 
-        return postRepository.getByTitle(request);
-    }
 
     public Post updatePost(UpdatePost request) {
         LOGGER.info("Updating post {}", request.getPostId());
