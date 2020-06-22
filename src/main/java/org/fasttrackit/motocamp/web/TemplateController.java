@@ -24,4 +24,8 @@ public class TemplateController {
     public String createMotor() {
         return "createMotorcycle";
     }
+    @GetMapping("timeline")
+    public String getCartPageView(){
+        return "timeline";
+    }
 }

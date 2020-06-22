@@ -72,11 +72,12 @@ window.Newsfeed = {
                         <img src="${user.profileImageUrl}" alt="user" class="profile-photo-md pull-left"/>
                         <div class="post-detail">
                             <div class="user-info">
-                                <h5><a href="timeline.html" class="profile-link">${user.username}</a></h5>
+                                <h5><a href="/timeline" class="profile-link">${user.username}</a></h5>
                             </div>
                         </div>
                     </div>`
     },
+
     createPost: function () {
         $.ajax({
             url: Newsfeed.API_URL + "/user/user",
