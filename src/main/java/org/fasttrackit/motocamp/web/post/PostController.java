@@ -1,4 +1,4 @@
-package org.fasttrackit.motocamp.web;
+package org.fasttrackit.motocamp.web.post;
 
 import org.fasttrackit.motocamp.domain.Post;
 import org.fasttrackit.motocamp.service.post.PostAndCommentService;
@@ -38,7 +38,7 @@ public class PostController {
     @GetMapping("/{id}")
     public ResponseEntity<Page<PostResponse>> getProfilePosts(@PathVariable long id, Pageable pageable) {
 
-        Page<PostResponse> postsForProfile = postService.getPostsForProfile(id, pageable);
+        Page<PostResponse> postsForProfile = postAndCommentService.getPostsForProfile(id, pageable);
         return new ResponseEntity<>(postsForProfile, HttpStatus.OK);
     }
 
@@ -46,6 +46,12 @@ public class PostController {
     public ResponseEntity<PostResponse> getPostByTitle(CreatePost request, Pageable pageable) {
         PostResponse postByTitle = postAndCommentService.getPostByTitle(request.getTitle(), pageable);
         return new ResponseEntity<>(postByTitle, HttpStatus.OK);
+    }
+
+    @GetMapping("/post/{id}")
+    public ResponseEntity<PostResponse> getPostById(@PathVariable long id, Pageable pageable) {
+        PostResponse postById = postAndCommentService.getPostById(id, pageable);
+        return new ResponseEntity<>(postById, HttpStatus.OK);
     }
 
     @GetMapping
@@ -56,8 +62,8 @@ public class PostController {
     }
 
     @PutMapping
-    public ResponseEntity<Post> updatePost(@RequestBody UpdatePost request) {
-        Post post = postService.updatePost(request);
+    public ResponseEntity<Post> updatePost(@RequestBody UpdatePost request, Principal principal) {
+        Post post = postService.updatePost(request, principal);
         return new ResponseEntity<>(post, HttpStatus.OK);
     }
 

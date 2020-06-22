@@ -54,29 +54,6 @@ public class PostService {
 
     }
 
-    @Transactional
-    public Page<PostResponse> getPostsForProfile(long id, Pageable pageable) {
-        LOGGER.info("Retrieving posts for profile {}", id);
-
-        Page<Post> postsPage = postRepository.getAllByUser_IdOrderByDateDesc(id, pageable);
-
-        List<PostResponse> postDtos = new ArrayList<>();
-
-        for (Post post : postsPage.getContent()) {
-            PostResponse dto = new PostResponse();
-            dto.setContent(post.getContent());
-            dto.setDate(post.getDate());
-            dto.setTitle(post.getTitle());
-            dto.setImageUrl(post.getImageUrl());
-            dto.setNameFromUser(post.getNameFromUser());
-            dto.setPhotoUser(post.getPhotoUser());
-            dto.setId(post.getId());
-
-            postDtos.add(dto);
-        }
-        Collections.reverse(postDtos);
-        return new PageImpl<>(postDtos, pageable, postsPage.getTotalElements());
-    }
 
     public Post getPost(long id) {
         LOGGER.info("Retrieving post {}", id);
@@ -87,10 +64,24 @@ public class PostService {
 
 
 
-    public Post updatePost(UpdatePost request) {
+    public Post updatePost(UpdatePost request, Principal principal) {
         LOGGER.info("Updating post {}", request.getPostId());
 
-        Post post = getPost(request.getPostId());
+        String principalName = principal.getName();
+
+        UserResponse user = userService.getUserBySession(principalName);
+        long principalId = user.getId();
+
+        Post post = postRepository.findById(request.getPostId())
+                .orElseThrow(() -> new ResourceNotFoundException("Post " + request.getPostId() + " not found."));
+        long userId = post.getUser().getId();
+
+        if (principalId != userId) {
+            LOGGER.info("This is not your post");
+            return post;
+        }
+
+        LOGGER.info("Updating post by id {}", post.getId());
         post.setDate(LocalDate.now());
         post.setContent(request.getContent());
         return postRepository.save(post);

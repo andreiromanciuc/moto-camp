@@ -3,6 +3,7 @@ package org.fasttrackit.motocamp.service.post;
 
 
 import org.fasttrackit.motocamp.domain.Post;
+import org.fasttrackit.motocamp.exception.ResourceNotFoundException;
 import org.fasttrackit.motocamp.persistance.PostRepository;
 import org.fasttrackit.motocamp.service.CommentService;
 import org.fasttrackit.motocamp.service.UserService;
@@ -33,6 +34,52 @@ public class PostAndCommentService {
         this.commentService = commentService;
     }
 
+    public PostResponse getPostById(long id, Pageable pageable) {
+        LOGGER.info("Retrieving post by id nr. {}, for editing", id);
+
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Post " + id + " not found."));
+
+        Page<CommentResponse> commentsForPost = commentService.getCommentsForPost(id, pageable);
+
+        PostResponse postResponse = new PostResponse();
+        postResponse.setId(post.getId());
+        postResponse.setTitle(post.getTitle());
+        postResponse.setContent(post.getContent());
+        postResponse.setPhotoUser(post.getPhotoUser());
+        postResponse.setNameFromUser(post.getNameFromUser());
+        postResponse.setDate(post.getDate());
+        postResponse.setImageUrl(post.getImageUrl());
+        postResponse.setComments(commentsForPost);
+
+        return postResponse;
+    }
+    @Transactional
+    public Page<PostResponse> getPostsForProfile(long id, Pageable pageable) {
+        LOGGER.info("Retrieving posts for profile {}", id);
+
+        Page<Post> postsPage = postRepository.getAllByUser_IdOrderByDateDesc(id, pageable);
+
+        List<PostResponse> postDtos = new ArrayList<>();
+
+        for (Post post : postsPage.getContent()) {
+            PostResponse dto = new PostResponse();
+            dto.setContent(post.getContent());
+            dto.setDate(post.getDate());
+            dto.setTitle(post.getTitle());
+            dto.setImageUrl(post.getImageUrl());
+            dto.setNameFromUser(post.getNameFromUser());
+            dto.setPhotoUser(post.getPhotoUser());
+            dto.setId(post.getId());
+
+            Page<CommentResponse> commentsForPost = commentService.getCommentsForPost(post.getId(), pageable);
+            dto.setComments(commentsForPost);
+
+            postDtos.add(dto);
+        }
+        Collections.reverse(postDtos);
+        return new PageImpl<>(postDtos, pageable, postsPage.getTotalElements());
+    }
 
     @Transactional
     public Page<PostResponse> getAllPosts(Pageable pageable) {

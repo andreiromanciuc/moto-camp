@@ -33,7 +33,7 @@ window.Newsfeed = {
     },
 
     displayUserName: function (user) {
-        return `<h5><a href="/timeline" class="profile-name" data-id=${user.id}>${user.username}</a></h5>`
+        return `<h5><a href="" class="profile-name" id="username" data-id=${user.id}>${user.username}</a></h5>`
     },
 
     getMotorById: function (id) {
@@ -113,6 +113,8 @@ window.Newsfeed = {
         })
     },
 
+
+
     getPosts: function () {
         $.ajax({
             url: Newsfeed.API_URL + "/post",
@@ -122,15 +124,6 @@ window.Newsfeed = {
         })
     },
 
-    getPostsForUser: function (id) {
-        $.ajax({
-            url: Newsfeed.API_URL + "/post/"+id,
-            method: "GET"
-        }).done(function (response) {
-            location.replace("/timeline");
-            Newsfeed.displayPosts(response.content);
-        })
-    },
 
     displayPosts: function (posts) {
         let postsHtml = '';
@@ -145,23 +138,20 @@ window.Newsfeed = {
                         <img src="${post.photoUser}" alt="user" class="profile-photo-md pull-left"/>
                         <div class="post-detail">
                             <div class="user-info">
-                                <h5><a href="timeline.html" class="profile-link">${post.nameFromUser}</a> <span
+                                <h5><a href="" class="profile-link">${post.nameFromUser}</a> <span
                                         class="following">${post.title}</span></h5>
                                 <p class="text-muted">${post.date.year} / ${post.date.month} / ${post.date.dayOfMonth}</p> 
                             </div>
                             <div class="reaction" >
-                                <a id="save" type="submit" style="display: inline-flex; border: none; 
-        background-color: transparent; padding-left: 10px; visibility: hidden" data-postId=${post.id}><i class="fas fa-save"></i></a>
-        <a id="edit" type="submit" class="buttons"style="display: inline-flex; 
-        padding-left: 10px; border: none; background-color: transparent" data-postId=${post.id}>
-        <i class="fas fa-user-edit"></i></a>
-        <a id="delete" class="buttons" style="display: inline-flex; padding-left: 30px" data-postId=${post.id}>
-        <i class="fas fa-trash-alt"></i></a>
+                            
+                                <a id="edit" data-postId=${post.id}>
+                                <i class="fa fa-edit"></i>
+                                
                             </div>
                             <div class="line-divider"></div>
                             <div class="post-text">
-                                <p>${post.content}</p>
-                                <a id="update-post" data-postId=${post.id} style="visibility: hidden"><input placeholder="Write update to post"></a>
+                                                            
+                                <p id="post-content">${post.content}</p>
                             </div>
                             <div class="line-divider"></div>
                             <img class="post-photo" src="${post.imageUrl}">
@@ -179,14 +169,27 @@ window.Newsfeed = {
                     </div>`;
     },
 
-    updatePost: function (id, content) {
+    getPostById: function (id) {
+        $.ajax({
+            url: Newsfeed.API_URL + "/post/post/" + id,
+            method: "GET"
+        }).done(function (post) {
+            console.log(post);
+            Newsfeed.getHtmlForOnePost(post);
+        })
+    },
+
+    updatePost: function (id) {
+
+        let content = $('.update-message').val();
+
         let requestBody = {
             content: content,
             postId: id
         };
 
         $.ajax({
-            url: Newsfeed.API_URL + "/post" + requestBody,
+            url: Newsfeed.API_URL + "/post",
             method: "PUT",
             contentType: "application/json",
             data: JSON.stringify(requestBody)
@@ -226,19 +229,28 @@ window.Newsfeed = {
 
         $("#post-feed").delegate("#edit", "click", function (event) {
             event.preventDefault();
-            console.log($(this));
-            $('#update-post').css("visibility", "visible");
-
+            let id = $(this).data("postid");
+            Newsfeed.getPostById(id);
+            $(this).siblings('#update-post').css("visibility", "visible");
             $(this).siblings('#save').css("visibility", "visible");
+
         });
 
         $("#post-feed").delegate("#save", "click", function (event) {
             event.preventDefault();
+
             let id = $(this).data("postid");
-            let content = $('#update-post').val();
-            Newsfeed.updatePost(id, content);
+            Newsfeed.updatePost(id);
         });
 
+        $(".profile-name").delegate("#username", "click", function (event) {
+            event.preventDefault();
+            let id = $(this).data("id");
+            Timeline.getPostsForUser(id);
+            Timeline.getUserById(id);
+            Timeline.getMotorById(id);
+            location.replace("/timeline");
+        })
     },
 
 };
