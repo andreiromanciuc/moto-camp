@@ -1,15 +1,24 @@
 window.Timeline = {
     API_URL: "http://localhost:8083/timeline",
 
+    getIdFromNewsfeed: function () {
+        let userId = localStorage.getItem("id");
+        // console.log(userId);
+        Timeline.getUserById(userId);
+        Timeline.getMotorById(userId);
+        Timeline.getPostsForUser(userId);
+        localStorage.removeItem("id");
+    },
+
     getUserById: function (id) {
         $.ajax({
             url: Timeline.API_URL + "/user/" + id,
             method: "GET"
         }).done(function (user) {
             // console.log(user);
-            $(".profile-photo").html(Timeline.displayUserProfilePhoto(user));
-            $(".profile-name").html(Timeline.displayUserName(user));
-            $(".photo-form").html(Timeline.displayUsersProfilePhotoToFormGroup(user));
+            $(".profile-photo-timeline").html(Timeline.displayUserProfilePhoto(user));
+            $(".profile-name-timeline").html(Timeline.displayUserName(user));
+            $(".photo-form-timeline").html(Timeline.displayUsersProfilePhotoToFormGroup(user));
 
         });
     },
@@ -22,7 +31,7 @@ window.Timeline = {
     },
 
     displayUserName: function (user) {
-        return `<h5><a href="" class="profile-name" id="username" data-id=${user.id}>${user.username}</a></h5>`
+        return `<h5><a class="profile-name" id="username" data-id=${user.id}>${user.username}</a></h5>`
     },
 
     getMotorById: function (id) {
@@ -30,8 +39,8 @@ window.Timeline = {
             url: Timeline.API_URL + "/motorcycle/" + id,
             method: "GET"
         }).done(function (motor) {
-            $(".moto-photo").html(Timeline.displayMotorProfilePhoto(motor));
-            $(".moto-name").html(Timeline.displayMotorUsername(motor));
+            $(".moto-photo-timeline").html(Timeline.displayMotorProfilePhoto(motor));
+            $(".moto-name-timeline").html(Timeline.displayMotorUsername(motor));
         });
     },
 
@@ -123,4 +132,4 @@ window.Timeline = {
                     </div>`;
     },
 };
-Timeline.getPostsForUser();
+Timeline.getIdFromNewsfeed();

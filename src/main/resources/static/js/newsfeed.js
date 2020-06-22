@@ -246,9 +246,7 @@ window.Newsfeed = {
         $(".profile-name").delegate("#username", "click", function (event) {
             event.preventDefault();
             let id = $(this).data("id");
-            Timeline.getPostsForUser(id);
-            Timeline.getUserById(id);
-            Timeline.getMotorById(id);
+            localStorage.setItem("id", id.toString());
             location.replace("/timeline");
         })
     },
