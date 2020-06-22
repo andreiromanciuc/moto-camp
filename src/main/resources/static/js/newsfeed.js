@@ -117,7 +117,6 @@ window.Newsfeed = {
             url: Newsfeed.API_URL + "/post",
             method: "GET"
         }).done(function (response) {
-            console.log(response);
             Newsfeed.displayPosts(response.content);
         })
     },
@@ -149,13 +148,19 @@ window.Newsfeed = {
                                         class="following">${post.title}</span></h5>
                                 <p class="text-muted">${post.date.year} / ${post.date.month} / ${post.date.dayOfMonth}</p> 
                             </div>
-                            <div class="reaction" data-postId=${post.id}>
-                                <i id="post-delete" class="fa fa-trash" aria-hidden="true"></i>
+                            <div class="reaction" >
+                                <a id="save" type="submit" style="display: inline-flex; border: none; 
+        background-color: transparent; padding-left: 10px; visibility: hidden" data-postId=${post.id}><i class="fas fa-save"></i></a>
+        <a id="edit" type="submit" class="buttons"style="display: inline-flex; 
+        padding-left: 10px; border: none; background-color: transparent" data-postId=${post.id}>
+        <i class="fas fa-user-edit"></i></a>
+        <a id="delete" class="buttons" style="display: inline-flex; padding-left: 30px" data-postId=${post.id}>
+        <i class="fas fa-trash-alt"></i></a>
                             </div>
                             <div class="line-divider"></div>
                             <div class="post-text">
                                 <p>${post.content}</p>
-                                <input id="update-post" placeholder="Write update to post" style="visibility: hidden">
+                                <a class="update-post"> <input placeholder="Write update to post" style="visibility: hidden"></a>
                             </div>
                             <div class="line-divider"></div>
                             <img class="post-photo" src="${post.imageUrl}">
@@ -181,7 +186,7 @@ window.Newsfeed = {
 
         $.ajax({
             url: Newsfeed.API_URL + "/post" + requestBody,
-            method: "DELETE",
+            method: "PUT",
             contentType: "application/json",
             data: JSON.stringify(requestBody)
         }).done(function () {
@@ -212,7 +217,7 @@ window.Newsfeed = {
             Newsfeed.createPost();
         });
 
-        $("#post-feed").delegate(".reaction", "click", function () {
+        $("#post-feed").delegate("#delete", "click", function () {
             let id = $(this).data("postid");
             Newsfeed.deletePost(id);
         });
@@ -222,7 +227,7 @@ window.Newsfeed = {
             let content =  $("#update-post").val();
              // = $("#update-post").val();
             let id = $(this).val();
-            Newsfeed.updatePost(id, content);
+            // Newsfeed.updatePost(id, content);
         });
 
     },
