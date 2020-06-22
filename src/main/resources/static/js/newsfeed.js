@@ -160,7 +160,7 @@ window.Newsfeed = {
                             <div class="line-divider"></div>
                             <div class="post-text">
                                 <p>${post.content}</p>
-                                <a class="update-post"> <input placeholder="Write update to post" style="visibility: hidden"></a>
+                                <a id="update-post" data-postId=${post.id} style="visibility: hidden"><input placeholder="Write update to post"></a>
                             </div>
                             <div class="line-divider"></div>
                             <img class="post-photo" src="${post.imageUrl}">
@@ -217,17 +217,25 @@ window.Newsfeed = {
             Newsfeed.createPost();
         });
 
-        $("#post-feed").delegate("#delete", "click", function () {
+        $("#post-feed").delegate("#delete", "click", function (event) {
+            event.preventDefault();
             let id = $(this).data("postid");
             Newsfeed.deletePost(id);
         });
 
-        $("#post-feed").delegate(".post-text", "click", function () {
-            $("#update-post").css("visibility", "visible");
-            let content =  $("#update-post").val();
-             // = $("#update-post").val();
-            let id = $(this).val();
-            // Newsfeed.updatePost(id, content);
+        $("#post-feed").delegate("#edit", "click", function (event) {
+            event.preventDefault();
+            console.log($(this));
+            $('#update-post').css("visibility", "visible");
+
+            $(this).siblings('#save').css("visibility", "visible");
+        });
+
+        $("#post-feed").delegate("#save", "click", function (event) {
+            event.preventDefault();
+            let id = $(this).data("postid");
+            let content = $('#update-post').val();
+            Newsfeed.updatePost(id, content);
         });
 
     },
