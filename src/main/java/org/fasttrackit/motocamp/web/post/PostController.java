@@ -33,28 +33,14 @@ public class PostController {
         return new ResponseEntity<>(post, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Page<PostResponse>> getProfilePosts(@PathVariable long id, Pageable pageable) {
-
-        Page<PostResponse> postsForProfile = postAndCommentService.getPostsForProfile(id, pageable);
-        return new ResponseEntity<>(postsForProfile, HttpStatus.OK);
-    }
-
     @GetMapping("/search")
     public ResponseEntity<PostResponse> getPostByTitle(CreatePost request, Pageable pageable) {
         PostResponse postByTitle = postAndCommentService.getPostByTitle(request.getTitle(), pageable);
         return new ResponseEntity<>(postByTitle, HttpStatus.OK);
     }
 
-    @GetMapping("/post/{id}")
-    public ResponseEntity<PostResponse> getPostById(@PathVariable long id, Pageable pageable) {
-        PostResponse postById = postAndCommentService.getPostById(id, pageable);
-        return new ResponseEntity<>(postById, HttpStatus.OK);
-    }
-
     @GetMapping
     public ResponseEntity<Page<PostResponse>> getAllPosts(Pageable pageable) {
-
         Page<PostResponse> allPosts = postAndCommentService.getAllPosts(pageable);
         return new ResponseEntity<>(allPosts, HttpStatus.OK);
     }

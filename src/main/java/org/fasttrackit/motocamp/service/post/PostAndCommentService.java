@@ -1,7 +1,5 @@
 package org.fasttrackit.motocamp.service.post;
 
-
-
 import org.fasttrackit.motocamp.domain.Post;
 import org.fasttrackit.motocamp.exception.ResourceNotFoundException;
 import org.fasttrackit.motocamp.persistance.PostRepository;
@@ -9,6 +7,7 @@ import org.fasttrackit.motocamp.service.CommentService;
 import org.fasttrackit.motocamp.service.UserService;
 import org.fasttrackit.motocamp.transfer.comment.CommentResponse;
 import org.fasttrackit.motocamp.transfer.post.PostResponse;
+import org.fasttrackit.motocamp.transfer.post.UpdatePost;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -18,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,10 +28,12 @@ public class PostAndCommentService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
     private final PostRepository postRepository;
     private final CommentService commentService;
+    private final UserService userService;
 
-    public PostAndCommentService(PostRepository postRepository, CommentService commentService) {
+    public PostAndCommentService(PostRepository postRepository, CommentService commentService, UserService userService) {
         this.postRepository = postRepository;
         this.commentService = commentService;
+        this.userService = userService;
     }
 
     public PostResponse getPostById(long id, Pageable pageable) {
@@ -109,6 +111,7 @@ public class PostAndCommentService {
         return new PageImpl<>(postResponses, pageable, posts.getTotalElements());
     }
 
+    @Transactional
     public PostResponse getPostByTitle(String request, Pageable pageable) {
         LOGGER.info("Retrieving post by title {}", request);
         Post byTitle = postRepository.getByTitle(request);
@@ -125,5 +128,31 @@ public class PostAndCommentService {
         postResponse.setComments(commentsForPost);
 
         return postResponse;
+    }
+
+    @Transactional
+    public PostResponse updatePost(UpdatePost request, Pageable pageable) {
+        LOGGER.info("Updating post {}", request.getPostId());
+
+        Post post = postRepository.findById(request.getPostId())
+                .orElseThrow(() -> new ResourceNotFoundException("Post " + request.getPostId() + " not found."));
+        post.setContent(request.getContent());
+        post.setDate(LocalDate.now());
+        postRepository.save(post);
+
+        PostResponse postResponse = new PostResponse();
+        postResponse.setTitle(post.getTitle());
+        postResponse.setContent(post.getContent());
+        postResponse.setImageUrl(post.getImageUrl());
+        postResponse.setDate(post.getDate());
+        postResponse.setNameFromUser(post.getNameFromUser());
+        postResponse.setPhotoUser(post.getPhotoUser());
+        postResponse.setId(post.getId());
+        Page<CommentResponse> commentsForPost = commentService.getCommentsForPost(post.getId(), pageable);
+        postResponse.setComments(commentsForPost);
+
+        return postResponse;
+
+
     }
 }

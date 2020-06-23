@@ -62,29 +62,6 @@ public class PostService {
                 .orElseThrow(() -> new ResourceNotFoundException("Post " + id + " not found."));
     }
 
-    public Post updatePost(UpdatePost request, Principal principal) {
-        LOGGER.info("Updating post {}", request.getPostId());
-
-        String principalName = principal.getName();
-
-        UserResponse user = userService.getUserBySession(principalName);
-        long principalId = user.getId();
-
-        Post post = postRepository.findById(request.getPostId())
-                .orElseThrow(() -> new ResourceNotFoundException("Post " + request.getPostId() + " not found."));
-        long userId = post.getUser().getId();
-
-        if (principalId != userId) {
-            LOGGER.info("This is not your post");
-            return post;
-        }
-
-        LOGGER.info("Updating post by id {}", post.getId());
-        post.setDate(LocalDate.now());
-        post.setContent(request.getContent());
-        return postRepository.save(post);
-    }
-
     public void updateUserPhotoToPost(long id, CreateUser request) {
         LOGGER.info("Update photo to user");
 

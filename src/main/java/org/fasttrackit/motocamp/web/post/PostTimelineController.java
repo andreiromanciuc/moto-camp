@@ -52,17 +52,10 @@ public class PostTimelineController {
         return new ResponseEntity<>(postById, HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<Page<PostResponse>> getAllPosts(Pageable pageable) {
-
-        Page<PostResponse> allPosts = postAndCommentService.getAllPosts(pageable);
-        return new ResponseEntity<>(allPosts, HttpStatus.OK);
-    }
-
     @PutMapping
-    public ResponseEntity<Post> updatePost(@RequestBody UpdatePost request, Principal principal) {
-        Post post = postService.updatePost(request, principal);
-        return new ResponseEntity<>(post, HttpStatus.OK);
+    public ResponseEntity<PostResponse> updatePost(@RequestBody UpdatePost request, Pageable pageable) {
+        PostResponse postResponse = postAndCommentService.updatePost(request, pageable);
+        return new ResponseEntity<>(postResponse, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

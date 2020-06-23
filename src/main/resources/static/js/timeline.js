@@ -1,25 +1,16 @@
 window.Timeline = {
     API_URL: "http://localhost:8083/timeline",
 
-    getIdFromNewsfeed: function () {
-        let userId = localStorage.getItem("id");
-        // console.log(userId);
-        Timeline.getUserById(userId);
-        Timeline.getMotorById(userId);
-        Timeline.getPostsForUser(userId);
-        localStorage.removeItem("id");
-    },
-
-    getIdForEditingPost: function () {
-        let id = localStorage.getItem("postid");
-            $.ajax({
-                url: Timeline.API_URL + "/post/post/" + id,
-                method: "GET"
-            }).done(function (post) {
-                console.log(post);
-                Timeline.getHtmlForOnePostForUser(post);
-                localStorage.removeItem("postid");
-            });
+    getUserSession: function () {
+        $.ajax({
+            url: Timeline.API_URL + "/user/user",
+            method: "GET"
+        }).done(function (response) {
+            // console.log(response);
+            Timeline.getUserById(response);
+            Timeline.getMotorById(response);
+            Timeline.getPostsForUser(response);
+        })
     },
 
     getUserById: function (id) {
@@ -64,12 +55,16 @@ window.Timeline = {
     },
 
     createPostFromTimeline: function () {
+        $.ajax({
+            url: Timeline.API_URL + "/user/user",
+            method: "GET"
+        }).done(function (response) {
 
             let requestBody = {
-                title: $("#exampleTextarea1").val(),
-                content: $("#exampleTextarea2").val(),
+                title: $("#exampleTextarea1-timeline").val(),
+                content: $("#exampleTextarea2-timeline").val(),
                 imageUrl: "",
-                userId: $(this).data("id")
+                userId: response
             };
 
             $.ajax({
@@ -77,10 +72,12 @@ window.Timeline = {
                 method: "POST",
                 contentType: "application/json",
                 data: JSON.stringify(requestBody)
-            }).done(function (user) {
-                // console.log(user);
+            }).done(function (post) {
+                // console.log(post);
                 location.reload();
             });
+        })
+
     },
 
     searchPostByTitle: function () {
@@ -94,11 +91,48 @@ window.Timeline = {
     },
 
     deletePost: function (id) {
+        let result = confirm("Please confirm that you want to delete this post");
+        if (result) {
         $.ajax({
             url: Timeline.API_URL + "/post/" + id,
             method: "DELETE"
         }).done(function () {
-            location.replace("/newsfeed");
+                location.reload();
+            });
+        }
+        location.reload();
+    },
+
+    getPostById: function (id) {
+        $.ajax({
+            url: Timeline.API_URL + "/post/post/" + id,
+            method: "GET"
+        }).done(function (post) {
+            // console.log(post);
+            $("#post-feed-timeline").html(Timeline.getHtmlForOnePostForUser(post));
+            $('#update-post').css("visibility", "visible");
+            $('#save').css("visibility", "visible");
+        })
+    },
+
+
+    updatePost: function (id) {
+
+        let content = $('.update-message').val();
+
+        let requestBody = {
+            content: content,
+            postId: id
+        };
+
+        $.ajax({
+            url: Timeline.API_URL + "/post",
+            method: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify(requestBody)
+        }).done(function (post) {
+            // console.log(post);
+            $("#post-feed-timeline").html(Timeline.getHtmlForOnePostForUser(post));
         })
     },
 
@@ -131,19 +165,16 @@ window.Timeline = {
                                 <p class="text-muted">${post.date.year} / ${post.date.month} / ${post.date.dayOfMonth}</p> 
                             </div>
                             <div class="reaction" >
-                                
-                                <a id="delete" class="buttons" style="display: inline-flex; padding-left: 30px" data-postId=${post.id}>
-                                <i class="fas fa-trash-alt"></i></a>
-                                
-                            </div>
-                            <div class="line-divider"></div>
-                            <div class="post-text">
-                            
                                 <a id="save" type="submit" style="display: inline-flex; border: none; background-color: transparent; padding-left: 10px; visibility: hidden" data-postId=${post.id}>
                                 <i class="fas fa-save"></i></a>
                                 <a id="edit" type="submit" class="buttons"style="display: inline-flex; padding-left: 10px; border: none; background-color: transparent" data-postId=${post.id}>
                                 <i class="fa fa-edit"></i>
-                                
+                                <a id="delete" class="buttons" style="display: inline-flex; padding-left: 30px" data-postId=${post.id}>
+                                <i class="fas fa-trash-alt"></i></a>
+                             
+                            </div>
+                            <div class="line-divider"></div>
+                            <div class="post-text">
                                 <p id="post-content">${post.content}</p>
                                 <a id="update-post" data-postId=${post.id} style="visibility: hidden"><input class="update-message" placeholder="Write update to post"></a>
                             </div>
@@ -164,6 +195,11 @@ window.Timeline = {
     },
 
     bindEvents: function () {
+        $("#btn-publish-timeline").click(function (event) {
+            event.preventDefault();
+            Timeline.createPostFromTimeline();
+        });
+
         $("#search-icon-timeline").click(function (event) {
             event.preventDefault();
 
@@ -176,9 +212,21 @@ window.Timeline = {
             Timeline.deletePost(id);
         });
 
+        $("#post-feed-timeline").delegate("#edit", "click", function (event) {
+            event.preventDefault();
+            let postId = $(this).data("postid");
+
+            Timeline.getPostById(postId);
+        });
+
+        $("#post-feed-timeline").delegate("#save", "click", function (event) {
+            event.preventDefault();
+
+            let id = $(this).data("postid");
+            Timeline.updatePost(id);
+        });
     }
 
 };
-Timeline.getIdFromNewsfeed();
+Timeline.getUserSession();
 Timeline.bindEvents();
-Timeline.getIdForEditingPost();

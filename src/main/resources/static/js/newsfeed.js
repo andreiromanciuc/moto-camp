@@ -164,35 +164,6 @@ window.Newsfeed = {
                     </div>`;
     },
 
-    getPostById: function (id) {
-        $.ajax({
-            url: Newsfeed.API_URL + "/post/post/" + id,
-            method: "GET"
-        }).done(function (post) {
-            console.log(post);
-            Newsfeed.getHtmlForOnePost(post);
-        })
-    },
-
-    updatePost: function (id) {
-
-        let content = $('.update-message').val();
-
-        let requestBody = {
-            content: content,
-            postId: id
-        };
-
-        $.ajax({
-            url: Newsfeed.API_URL + "/post",
-            method: "PUT",
-            contentType: "application/json",
-            data: JSON.stringify(requestBody)
-        }).done(function () {
-            Newsfeed.getPosts();
-        })
-    },
-
     bindEvents: function () {
         $("#search-icon").click(function (event) {
             event.preventDefault();
@@ -206,25 +177,8 @@ window.Newsfeed = {
             Newsfeed.createPost();
         });
 
-        $("#post-feed").delegate("#edit", "click", function (event) {
-            event.preventDefault();
-            let id = $(this).data("postid");
-            localStorage.setItem("postid", id.toString());
-            location.replace("/timeline");
-
-        });
-
-        $("#post-feed").delegate("#save", "click", function (event) {
-            event.preventDefault();
-
-            let id = $(this).data("postid");
-            Newsfeed.updatePost(id);
-        });
-
         $(".profile-name").delegate("#username", "click", function (event) {
             event.preventDefault();
-            let id = $(this).data("id");
-            localStorage.setItem("id", id.toString());
             location.replace("/timeline");
         })
     },
