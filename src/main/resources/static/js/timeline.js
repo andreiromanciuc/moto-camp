@@ -10,6 +10,18 @@ window.Timeline = {
         localStorage.removeItem("id");
     },
 
+    getIdForEditingPost: function () {
+        let id = localStorage.getItem("postid");
+            $.ajax({
+                url: Timeline.API_URL + "/post/post/" + id,
+                method: "GET"
+            }).done(function (post) {
+                console.log(post);
+                Timeline.getHtmlForOnePostForUser(post);
+                localStorage.removeItem("postid");
+            });
+    },
+
     getUserById: function (id) {
         $.ajax({
             url: Timeline.API_URL + "/user/" + id,
@@ -31,7 +43,7 @@ window.Timeline = {
     },
 
     displayUserName: function (user) {
-        return `<h5><a class="profile-name" id="username" data-id=${user.id}>${user.username}</a></h5>`
+        return `<h5><a href="#" class="profile-name" id="username" data-id=${user.id}>${user.username}</a></h5>`
     },
 
     getMotorById: function (id) {
@@ -71,12 +83,22 @@ window.Timeline = {
             });
     },
 
+    searchPostByTitle: function () {
+        let search = $("#search").val();
+        $.ajax({
+            url: Timeline.API_URL + "/post/search?title=" + search,
+            method: "GET"
+        }).done(function (post) {
+            $("#post-feed-timeline").html(Timeline.getHtmlForOnePostForUser(post));
+        })
+    },
+
     getPostsForUser: function (id) {
         $.ajax({
             url: Timeline.API_URL + "/post/"+id,
             method: "GET"
         }).done(function (response) {
-            console.log(response);
+            // console.log(response);
             // location.replace("/timeline");
             Timeline.displayPostsForOneUser(response.content);
         })
@@ -131,5 +153,17 @@ window.Timeline = {
                         </div>
                     </div>`;
     },
+
+    bindEvents: function () {
+        $("#search-icon-timeline").click(function (event) {
+            event.preventDefault();
+
+            Timeline.searchPostByTitle();
+        });
+
+    }
+
 };
 Timeline.getIdFromNewsfeed();
+Timeline.bindEvents();
+Timeline.getIdForEditingPost();

@@ -144,9 +144,6 @@ window.Newsfeed = {
                             </div>
                             <div class="reaction" >
                             
-                                <a id="edit" data-postId=${post.id}>
-                                <i class="fa fa-edit"></i>
-                                
                             </div>
                             <div class="line-divider"></div>
                             <div class="post-text">
@@ -230,9 +227,8 @@ window.Newsfeed = {
         $("#post-feed").delegate("#edit", "click", function (event) {
             event.preventDefault();
             let id = $(this).data("postid");
-            Newsfeed.getPostById(id);
-            $(this).siblings('#update-post').css("visibility", "visible");
-            $(this).siblings('#save').css("visibility", "visible");
+            localStorage.setItem("postid", id.toString());
+            location.replace("/timeline");
 
         });
 
