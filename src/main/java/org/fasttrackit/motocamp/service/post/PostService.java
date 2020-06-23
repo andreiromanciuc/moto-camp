@@ -62,8 +62,6 @@ public class PostService {
                 .orElseThrow(() -> new ResourceNotFoundException("Post " + id + " not found."));
     }
 
-
-
     public Post updatePost(UpdatePost request, Principal principal) {
         LOGGER.info("Updating post {}", request.getPostId());
 

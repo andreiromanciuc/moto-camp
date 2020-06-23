@@ -93,6 +93,15 @@ window.Timeline = {
         })
     },
 
+    deletePost: function (id) {
+        $.ajax({
+            url: Timeline.API_URL + "/post/" + id,
+            method: "DELETE"
+        }).done(function () {
+            location.replace("/newsfeed");
+        })
+    },
+
     getPostsForUser: function (id) {
         $.ajax({
             url: Timeline.API_URL + "/post/"+id,
@@ -159,6 +168,12 @@ window.Timeline = {
             event.preventDefault();
 
             Timeline.searchPostByTitle();
+        });
+
+        $("#post-feed-timeline").delegate("#delete", "click", function (event) {
+            event.preventDefault();
+            let id = $(this).data("postid");
+            Timeline.deletePost(id);
         });
 
     }

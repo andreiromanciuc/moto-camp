@@ -13,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-
 
 @CrossOrigin
 @RestController
@@ -59,18 +57,6 @@ public class PostController {
 
         Page<PostResponse> allPosts = postAndCommentService.getAllPosts(pageable);
         return new ResponseEntity<>(allPosts, HttpStatus.OK);
-    }
-
-    @PutMapping
-    public ResponseEntity<Post> updatePost(@RequestBody UpdatePost request, Principal principal) {
-        Post post = postService.updatePost(request, principal);
-        return new ResponseEntity<>(post, HttpStatus.OK);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable long id, Principal principal) {
-        postService.deletePost(id, principal);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

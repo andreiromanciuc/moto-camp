@@ -113,8 +113,6 @@ window.Newsfeed = {
         })
     },
 
-
-
     getPosts: function () {
         $.ajax({
             url: Newsfeed.API_URL + "/post",
@@ -195,16 +193,6 @@ window.Newsfeed = {
         })
     },
 
-    deletePost: function (id) {
-        $.ajax({
-            url: Newsfeed.API_URL + "/post/" + id,
-            method: "DELETE"
-        }).done(function () {
-            Newsfeed.getPosts();
-        })
-    },
-
-
     bindEvents: function () {
         $("#search-icon").click(function (event) {
             event.preventDefault();
@@ -216,12 +204,6 @@ window.Newsfeed = {
         $("#btn-publish").click(function (event) {
             event.preventDefault();
             Newsfeed.createPost();
-        });
-
-        $("#post-feed").delegate("#delete", "click", function (event) {
-            event.preventDefault();
-            let id = $(this).data("postid");
-            Newsfeed.deletePost(id);
         });
 
         $("#post-feed").delegate("#edit", "click", function (event) {
