@@ -1,7 +1,7 @@
 package org.fasttrackit.motocamp.web.user;
 
 import org.fasttrackit.motocamp.domain.User;
-import org.fasttrackit.motocamp.service.UserService;
+import org.fasttrackit.motocamp.service.user.UserService;
 import org.fasttrackit.motocamp.transfer.user.UserResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

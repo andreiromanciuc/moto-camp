@@ -26,7 +26,7 @@ window.Newsfeed = {
     },
 
     displayUsersProfilePhotoToFormGroup: function (user) {
-        return`<img src=${user.imageUrl} alt="" class="profile-photo-md"/>`
+        return `<img src=${user.imageUrl} alt="" class="profile-photo-md"/>`
     },
     displayUserProfilePhoto: function (user) {
         return `<img src=${user.imageUrl}  alt="user" class="profile-photo"/>`
@@ -49,8 +49,16 @@ window.Newsfeed = {
     displayMotorProfilePhoto: function (motor) {
         return `<img src="${motor.imageUrl}" alt="moto_img" class="moto-photo">`
     },
+
+    displayPhotoOfMotorSearchedUser: function (user) {
+        return `<img src="${user.motorPhoto}" alt="moto_img" class="moto-photo">`
+    },
     displayMotorUsername: function (motor) {
         return `<h5><a href="#" class="moto-name">${motor.userName}</a></h5>`
+    },
+
+    displayUsernameOfMotorSearchedUser: function (user) {
+        return `<h5><a href="#" class="moto-name">${user.motorUsername}</a></h5>`
     },
 
     searchUserByUsername: function () {
@@ -60,79 +68,108 @@ window.Newsfeed = {
             url: Newsfeed.API_URL + "/user/?username=" + username,
             method: "GET"
         }).done(function (user) {
+            // console.log(user);
+            $('#post-feed').html(Newsfeed.displayUserAfterSearch(user));
+        });
+
+    },
+
+    getUserAfterSearchByUsername: function (username) {
+        $.ajax({
+            url: Newsfeed.API_URL + "/user/username/" + username,
+            method: "GET"
+        }).done(function (user) {
             console.log(user);
+            let id = user.id;
+            Newsfeed.getPostsForUser(id);
+            $(".profile-photo").html(Newsfeed.displayUserProfilePhoto(user));
+            $(".profile-name").html(Newsfeed.displayUserName(user));
+            $(".photo-form").html(Newsfeed.displayUsersProfilePhotoToFormGroup(user));
+            $(".moto-photo").html(Newsfeed.displayPhotoOfMotorSearchedUser(user));
+            $(".moto-name").html(Newsfeed.displayUsernameOfMotorSearchedUser(user));
 
-            // Newsfeed.displayUserAfterSearch(user.content);
-        });
-
-    },
-
-    displayUserAfterSearch: function (user) {
-        return`<div class="post-container">
-                        <img src="${user.profileImageUrl}" alt="user" class="profile-photo-md pull-left"/>
-                        <div class="post-detail">
-                            <div class="user-info">
-                                <h5><a href="/timeline" class="profile-link">${user.username}</a></h5>
-                            </div>
-                        </div>
-                    </div>`
-    },
-
-    createPost: function () {
-        $.ajax({
-            url: Newsfeed.API_URL + "/user/user",
-            method: "GET"
-        }).done(function (response) {
-
-            let requestBody = {
-                title: $("#exampleTextarea1").val(),
-                content: $("#exampleTextarea2").val(),
-                imageUrl: "",
-                userId: response
-            };
-
-            $.ajax({
-                url: Newsfeed.API_URL + "/post",
-                method: "POST",
-                contentType: "application/json",
-                data: JSON.stringify(requestBody)
-            }).done(function (user) {
-                // console.log(user);
-                location.reload();
-            });
         });
     },
 
-    searchPostByTitle: function () {
-        let title = $("#search").val();
+    getPostsForUser: function (id) {
         $.ajax({
-            url: Newsfeed.API_URL + "/post/search?title=" + title,
-            method: "GET"
-        }).done(function (post) {
-            $("#post-feed").html(Newsfeed.getHtmlForOnePost(post));
-        })
-    },
-
-    getPosts: function () {
-        $.ajax({
-            url: Newsfeed.API_URL + "/post",
+            url: Newsfeed.API_URL + "/post/"+id,
             method: "GET"
         }).done(function (response) {
+            // console.log(response);
             Newsfeed.displayPosts(response.content);
         })
     },
 
 
-    displayPosts: function (posts) {
-        let postsHtml = '';
+displayUserAfterSearch: function (user) {
+    return `<div class="post-container">
+                        <img src="${user.imageUrl}" alt="user" class="profile-photo-md pull-left"/>
+                        <div class="post-detail">
+                            <div class="user-info">
+                                <h5><a href="#" id="searched_user" class="profile-link">${user.username}</a></h5>
+                            </div>
+                        </div>
+                    </div>`
+},
 
-        posts.forEach(post => postsHtml += Newsfeed.getHtmlForOnePost(post));
+createPost: function () {
+    $.ajax({
+        url: Newsfeed.API_URL + "/user/user",
+        method: "GET"
+    }).done(function (response) {
 
-        $('#post-feed').html(postsHtml);
-    },
+        let requestBody = {
+            title: $("#exampleTextarea1").val(),
+            content: $("#exampleTextarea2").val(),
+            imageUrl: "",
+            userId: response
+        };
 
-    getHtmlForOnePost: function (post) {
-        return `<div class="post-container">
+        $.ajax({
+            url: Newsfeed.API_URL + "/post",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(requestBody)
+        }).done(function (user) {
+            // console.log(user);
+            location.reload();
+        });
+    });
+},
+
+searchPostByTitle: function () {
+    let title = $("#search").val();
+    $.ajax({
+        url: Newsfeed.API_URL + "/post/search?title=" + title,
+        method: "GET"
+    }).done(function (post) {
+        $("#post-feed").html(Newsfeed.getHtmlForOnePost(post));
+    })
+}
+,
+
+
+getPosts: function () {
+    $.ajax({
+        url: Newsfeed.API_URL + "/post",
+        method: "GET"
+    }).done(function (response) {
+        Newsfeed.displayPosts(response.content);
+    })
+},
+
+
+displayPosts: function (posts) {
+    let postsHtml = '';
+
+    posts.forEach(post => postsHtml += Newsfeed.getHtmlForOnePost(post));
+
+    $('#post-feed').html(postsHtml);
+},
+
+getHtmlForOnePost: function (post) {
+    return `<div class="post-container">
                         <img src="${post.photoUser}" alt="user" class="profile-photo-md pull-left"/>
                         <div class="post-detail">
                             <div class="user-info">
@@ -162,26 +199,35 @@ window.Newsfeed = {
                             </div>
                         </div>
                     </div>`;
-    },
+}
+,
 
-    bindEvents: function () {
-        $("#search-icon").click(function (event) {
-            event.preventDefault();
+bindEvents: function () {
+    $("#search-icon").click(function (event) {
+        event.preventDefault();
 
-            Newsfeed.searchUserByUsername();
-            Newsfeed.searchPostByTitle();
-        });
+        Newsfeed.searchUserByUsername();
+        Newsfeed.searchPostByTitle();
+    });
 
-        $("#btn-publish").click(function (event) {
-            event.preventDefault();
-            Newsfeed.createPost();
-        });
+    $("#btn-publish").click(function (event) {
+        event.preventDefault();
+        Newsfeed.createPost();
+    });
 
-        $(".profile-name").delegate("#username", "click", function (event) {
-            event.preventDefault();
-            location.replace("/timeline");
-        })
-    },
+    $(".profile-name").delegate("#username", "click", function (event) {
+        event.preventDefault();
+        location.replace("/timeline");
+    });
+
+    $('#post-feed').delegate('#searched_user', 'click', function (event) {
+        event.preventDefault();
+        let username = $('#searched_user').clone().children().remove().end().text();
+        Newsfeed.getUserAfterSearchByUsername(username);
+    });
+
+
+},
 
 };
 Newsfeed.getPosts();

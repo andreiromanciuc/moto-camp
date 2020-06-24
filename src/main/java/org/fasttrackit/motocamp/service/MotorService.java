@@ -4,6 +4,7 @@ import org.fasttrackit.motocamp.domain.Motorcycle;
 import org.fasttrackit.motocamp.domain.User;
 import org.fasttrackit.motocamp.exception.ResourceNotFoundException;
 import org.fasttrackit.motocamp.persistance.MotorRepository;
+import org.fasttrackit.motocamp.service.user.UserService;
 import org.fasttrackit.motocamp.transfer.motorcycle.CreateMotorcycle;
 import org.fasttrackit.motocamp.transfer.motorcycle.UpdateMotorcycle;
 import org.slf4j.Logger;

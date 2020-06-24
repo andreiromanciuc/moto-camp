@@ -1,9 +1,8 @@
 package org.fasttrackit.motocamp.steps;
 
 import org.fasttrackit.motocamp.domain.User;
-import org.fasttrackit.motocamp.service.UserService;
+import org.fasttrackit.motocamp.service.user.UserService;
 import org.fasttrackit.motocamp.transfer.user.CreateUser;
-import org.fasttrackit.motocamp.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;

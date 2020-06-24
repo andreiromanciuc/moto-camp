@@ -1,11 +1,11 @@
-package org.fasttrackit.motocamp.service;
+package org.fasttrackit.motocamp.service.user;
 
 import org.fasttrackit.motocamp.domain.User;
 import org.fasttrackit.motocamp.exception.ResourceNotFoundException;
 import org.fasttrackit.motocamp.persistance.UserRepository;
+import org.fasttrackit.motocamp.service.EmailServiceImpl;
 import org.fasttrackit.motocamp.transfer.user.CreateUser;
 import org.fasttrackit.motocamp.transfer.user.UserResponse;
-import org.fasttrackit.motocamp.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +63,7 @@ public class UserService {
         userResponse.setId(user.getId());
         userResponse.setEmail(user.getEmail());
         userResponse.setUsername(user.getUsername());
-        userResponse.setProfileImageUrl(user.getImageUrl());
+        userResponse.setImageUrl(user.getImageUrl());
 
         return userResponse;
     }
@@ -77,7 +77,7 @@ public class UserService {
         userResponse.setId(user.getId());
         userResponse.setEmail(user.getEmail());
         userResponse.setUsername(user.getUsername());
-        userResponse.setProfileImageUrl(user.getImageUrl());
+        userResponse.setImageUrl(user.getImageUrl());
 
         return userResponse;
     }

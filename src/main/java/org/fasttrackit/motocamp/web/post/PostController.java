@@ -45,4 +45,11 @@ public class PostController {
         return new ResponseEntity<>(allPosts, HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Page<PostResponse>> getProfilePosts(@PathVariable long id, Pageable pageable) {
+
+        Page<PostResponse> postsForProfile = postAndCommentService.getPostsForProfile(id, pageable);
+        return new ResponseEntity<>(postsForProfile, HttpStatus.OK);
+    }
+
 }

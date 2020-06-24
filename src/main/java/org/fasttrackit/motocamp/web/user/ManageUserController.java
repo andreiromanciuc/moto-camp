@@ -2,7 +2,8 @@ package org.fasttrackit.motocamp.web.user;
 
 import org.fasttrackit.motocamp.domain.User;
 import org.fasttrackit.motocamp.service.post.PostService;
-import org.fasttrackit.motocamp.service.UserService;
+import org.fasttrackit.motocamp.service.user.SearchedUserProfile;
+import org.fasttrackit.motocamp.service.user.UserService;
 import org.fasttrackit.motocamp.transfer.user.CreateUser;
 import org.fasttrackit.motocamp.transfer.user.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,13 @@ public class ManageUserController {
 
     private final UserService userService;
     private final PostService postService;
+    private final SearchedUserProfile searchedUserProfile;
 
     @Autowired
-    public ManageUserController(UserService userService, PostService postService) {
+    public ManageUserController(UserService userService, PostService postService, SearchedUserProfile searchedUserProfile) {
         this.userService = userService;
         this.postService = postService;
+        this.searchedUserProfile = searchedUserProfile;
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
@@ -41,6 +44,12 @@ public class ManageUserController {
     public ResponseEntity<User> getUser(@PathVariable long id) {
         User user = userService.getUser(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @GetMapping("/username/{request}")
+    public ResponseEntity<UserResponse> getUserByUsernameAfterSearch(@PathVariable String request) {
+        UserResponse userByUsername = searchedUserProfile.getUserProfileAfterSearch(request);
+        return new ResponseEntity<>(userByUsername, HttpStatus.OK);
     }
 
     @GetMapping

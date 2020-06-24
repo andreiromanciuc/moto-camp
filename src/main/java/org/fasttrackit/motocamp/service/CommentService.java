@@ -6,6 +6,7 @@ import org.fasttrackit.motocamp.domain.User;
 import org.fasttrackit.motocamp.exception.ResourceNotFoundException;
 import org.fasttrackit.motocamp.persistance.CommentRepository;
 import org.fasttrackit.motocamp.service.post.PostService;
+import org.fasttrackit.motocamp.service.user.UserService;
 import org.fasttrackit.motocamp.transfer.comment.CommentResponse;
 import org.fasttrackit.motocamp.transfer.comment.CreateComment;
 import org.fasttrackit.motocamp.transfer.user.UserResponse;

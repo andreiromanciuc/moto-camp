@@ -1,5 +1,6 @@
 package org.fasttrackit.motocamp.service;
 
+import org.fasttrackit.motocamp.service.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.SimpleMailMessage;
