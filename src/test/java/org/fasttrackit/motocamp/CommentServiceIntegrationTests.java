@@ -38,9 +38,15 @@ public class CommentServiceIntegrationTests {
         CreateComment request = new CreateComment();
         request.setContent("Comment test");
         request.setPostId(post.getId());
-        request.setUserId(post.getUser().getId());
 
-        Comment comment = commentService.createComment(request);
+        Principal principal = new Principal() {
+            @Override
+            public String getName() {
+                return null;
+            }
+        };
+
+        Comment comment = commentService.createComment(request, principal);
 
         assertThat(comment, notNullValue());
         assertThat(comment.getContent(), is(request.getContent()));

@@ -93,7 +93,7 @@ window.Newsfeed = {
 
     getPostsForUser: function (id) {
         $.ajax({
-            url: Newsfeed.API_URL + "/post/"+id,
+            url: Newsfeed.API_URL + "/post/" + id,
             method: "GET"
         }).done(function (response) {
             // console.log(response);
@@ -102,8 +102,8 @@ window.Newsfeed = {
     },
 
 
-displayUserAfterSearch: function (user) {
-    return `<div class="post-container">
+    displayUserAfterSearch: function (user) {
+        return `<div class="post-container">
                         <img src="${user.imageUrl}" alt="user" class="profile-photo-md pull-left"/>
                         <div class="post-detail">
                             <div class="user-info">
@@ -111,65 +111,80 @@ displayUserAfterSearch: function (user) {
                             </div>
                         </div>
                     </div>`
-},
+    },
 
-createPost: function () {
-    $.ajax({
-        url: Newsfeed.API_URL + "/user/user",
-        method: "GET"
-    }).done(function (response) {
+    createPost: function () {
+        $.ajax({
+            url: Newsfeed.API_URL + "/user/user",
+            method: "GET"
+        }).done(function (response) {
 
+            let requestBody = {
+                title: $("#exampleTextarea1").val(),
+                content: $("#exampleTextarea2").val(),
+                imageUrl: "",
+                userId: response
+            };
+
+            $.ajax({
+                url: Newsfeed.API_URL + "/post",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(requestBody)
+            }).done(function (user) {
+                // console.log(user);
+                location.reload();
+            });
+        });
+    },
+
+    searchPostByTitle: function () {
+        let title = $("#search").val();
+        $.ajax({
+            url: Newsfeed.API_URL + "/post/search?title=" + title,
+            method: "GET"
+        }).done(function (post) {
+            $("#post-feed").html(Newsfeed.getHtmlForOnePost(post));
+        })
+    },
+
+    createComment: function () {
         let requestBody = {
-            title: $("#exampleTextarea1").val(),
-            content: $("#exampleTextarea2").val(),
-            imageUrl: "",
-            userId: response
+            content: $(".form-control").val(),
+            postId: $(this).id
         };
 
         $.ajax({
-            url: Newsfeed.API_URL + "/post",
+            url: Newsfeed.API_URL + "/comment",
             method: "POST",
             contentType: "application/json",
             data: JSON.stringify(requestBody)
-        }).done(function (user) {
-            // console.log(user);
-            location.reload();
+        }).done(function (comment) {
+            console.log(comment)
         });
-    });
-},
-
-searchPostByTitle: function () {
-    let title = $("#search").val();
-    $.ajax({
-        url: Newsfeed.API_URL + "/post/search?title=" + title,
-        method: "GET"
-    }).done(function (post) {
-        $("#post-feed").html(Newsfeed.getHtmlForOnePost(post));
-    })
-}
-,
+    },
 
 
-getPosts: function () {
-    $.ajax({
-        url: Newsfeed.API_URL + "/post",
-        method: "GET"
-    }).done(function (response) {
-        Newsfeed.displayPosts(response.content);
-    })
-},
+    getPosts: function () {
+        $.ajax({
+            url: Newsfeed.API_URL + "/post",
+            method: "GET"
+        }).done(function (response) {
+            Newsfeed.displayPosts(response.content);
+        })
+    },
 
 
-displayPosts: function (posts) {
-    let postsHtml = '';
+    displayPosts: function (posts) {
+        let postsHtml = '';
 
-    posts.forEach(post => postsHtml += Newsfeed.getHtmlForOnePost(post));
+        posts.forEach(post => postsHtml += Newsfeed.getHtmlForOnePost(post));
 
-    $('#post-feed').html(postsHtml);
-},
+        $('#post-feed').html(postsHtml);
+    },
 
-getHtmlForOnePost: function (post) {
-    return `<div class="post-container">
+    getHtmlForOnePost: function (post) {
+        return `<div class="post-container">
                         <img src="${post.photoUser}" alt="user" class="profile-photo-md pull-left"/>
                         <div class="post-detail">
                             <div class="user-info">
@@ -196,38 +211,42 @@ getHtmlForOnePost: function (post) {
                             <div class="post-comment">
                                 <img src="${post.photoUser}" alt="" class="profile-photo-sm"/>
                                 <input type="text" class="form-control" placeholder="Post a comment">
+                                <button class="comment-button" style="background-color: dodgerblue; border: none; border-radius: 10px;
+                                        color: white">post</button>                            
                             </div>
                         </div>
                     </div>`;
-}
-,
+    },
 
-bindEvents: function () {
-    $("#search-icon").click(function (event) {
-        event.preventDefault();
+    bindEvents: function () {
+        $("#search-icon").click(function (event) {
+            event.preventDefault();
 
-        Newsfeed.searchUserByUsername();
-        Newsfeed.searchPostByTitle();
-    });
+            Newsfeed.searchUserByUsername();
+            Newsfeed.searchPostByTitle();
+        });
 
-    $("#btn-publish").click(function (event) {
-        event.preventDefault();
-        Newsfeed.createPost();
-    });
+        $("#btn-publish").click(function (event) {
+            event.preventDefault();
+            Newsfeed.createPost();
+        });
 
-    $(".profile-name").delegate("#username", "click", function (event) {
-        event.preventDefault();
-        location.replace("/timeline");
-    });
+        $(".profile-name").delegate("#username", "click", function (event) {
+            event.preventDefault();
+            location.replace("/timeline");
+        });
 
-    $('#post-feed').delegate('#searched_user', 'click', function (event) {
-        event.preventDefault();
-        let username = $('#searched_user').clone().children().remove().end().text();
-        Newsfeed.getUserAfterSearchByUsername(username);
-    });
+        $('#post-feed').delegate('#searched_user', 'click', function (event) {
+            event.preventDefault();
+            let username = $('#searched_user').clone().children().remove().end().text();
+            Newsfeed.getUserAfterSearchByUsername(username);
+        });
 
-
-},
+        $('#post-feed').delegate('.comment-button', 'click', function (event) {
+            event.preventDefault();
+            Newsfeed.createComment();
+        });
+    },
 
 };
 Newsfeed.getPosts();

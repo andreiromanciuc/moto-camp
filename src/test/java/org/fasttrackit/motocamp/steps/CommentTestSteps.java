@@ -7,6 +7,8 @@ import org.fasttrackit.motocamp.transfer.comment.CreateComment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.security.Principal;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
@@ -24,9 +26,15 @@ public class CommentTestSteps {
         CreateComment request = new CreateComment();
         request.setContent("Comment test");
         request.setPostId(post.getId());
-        request.setUserId(post.getUser().getId());
 
-        Comment comment = commentService.createComment(request);
+        Principal principal = new Principal() {
+            @Override
+            public String getName() {
+                return null;
+            }
+        };
+
+        Comment comment = commentService.createComment(request, principal);
 
         assertThat(comment, notNullValue());
         assertThat(comment.getContent(), is(request.getContent()));

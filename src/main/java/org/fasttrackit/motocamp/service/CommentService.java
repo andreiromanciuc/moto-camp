@@ -9,6 +9,7 @@ import org.fasttrackit.motocamp.service.post.PostService;
 import org.fasttrackit.motocamp.service.user.UserService;
 import org.fasttrackit.motocamp.transfer.comment.CommentResponse;
 import org.fasttrackit.motocamp.transfer.comment.CreateComment;
+import org.fasttrackit.motocamp.transfer.user.CreateUser;
 import org.fasttrackit.motocamp.transfer.user.UserResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,15 +34,25 @@ public class CommentService {
     private final PostService postService;
 
     @Autowired
-    public CommentService(CommentRepository commentRepository, UserService userService, PostService postService) {
+    public CommentService(CommentRepository commentRepository,
+                          UserService userService,
+                          PostService postService) {
         this.commentRepository = commentRepository;
         this.userService = userService;
         this.postService = postService;
     }
 
-    public Comment createComment(CreateComment request) {
+
+    @Transactional
+    public Comment createComment(CreateComment request, Principal principal) {
         LOGGER.info("Creating comment {}", request);
-        User user = userService.getUser(request.getUserId());
+
+        String name = principal.getName();
+        CreateUser createUser = new CreateUser();
+        createUser.setUsername(name);
+        UserResponse userByUsername = userService.getUserByUsername(createUser);
+
+        User user = userService.getUser(userByUsername.getId());
         Post post = postService.getPost(request.getPostId());
 
         Comment comment = new Comment();

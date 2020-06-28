@@ -1027,6 +1027,11 @@ ul.online-users li span.online-dot {
     min-width: 0;
 }
 
+.comment-button{
+    height: 100%;
+    margin: 10px;
+}
+
 
 /*==================================================
   Nearby People CSS
