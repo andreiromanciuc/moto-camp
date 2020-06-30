@@ -6,4 +6,4 @@ I learned how connect my application to SMTP server (Google server) for sending 
 
 About application.
 It's a social network site for those who are passionate about motorcycles. 
-Each user is obliged when registering to register their motorcycle. The user can post a travel intention and the area through which he will ride. Other users seeing the post and commenting on it can join. Thus, a group of motorcyclists is organized who can travel together or post pictures from a certain trip and share impressions.
+Each user when registering is obliged to register their motorcycle. The user can post a travel intention and the area through which he will ride. Other users seeing the post and commenting on it can join. Thus, a group of motorcyclists is organized who can travel together or post pictures from a certain trip and share impressions.
