@@ -1,7 +1,7 @@
 # moto-camp
 In this application I learned how to create a "Spring Boot" project from the zero. 
-I implemented for the first time "Spring Boot Security". Respectively it comes with authentication form which it was impelemnted and of course with logout method.
-Also here you cand find how I implemented @OneToOne and @OneToMany relationships between enteties, implementation of conectivity with MySQL database and JavaScript and JQuery requests which came from front end. Js files and html files are saved on "resources" pakage from project. 
+I implemented for the first time "Spring Boot Security". Respectively it comes with authentication form and of course with logout method.
+Also here you cand find how I implemented @OneToOne and @OneToMany relationships between enteties, the implementation of conectivity with MySQL database and JavaScript/JQuery requests which are coming from front end. Js files and html files are saved on "resources" pakage from project. 
 I learned how connect my application to SMTP server (Google server) for sending emails to users.
 
 About application.
